@@ -19,8 +19,6 @@ class DonaturController extends Controller{
     $cypher = 'MATCH (n:Muzakki) where n.username="'.$username.'" and n.password = "'.$password.'" RETURN n as muzakki';
     $query = new Query($client, $cypher);
     $nodes = $query->getResultSet();
-    print_r(count($nodes));
-    print_r($cypher);
     $status = 'failed';
     $properties = array();
     if(count($nodes) > 0){
