@@ -14,3 +14,18 @@
 $app->get('/', function () use ($app) {
     return $app->welcome();
 });
+
+$app->group(['prefix' => 'api/v1','namespace' => 'App\Http\Controllers'], function($app)
+{
+    $app->post('login','DonaturController@loginDonatur');
+
+    $app->get('donatur','DonaturController@index');
+
+    $app->get('donatur/{id}','DonaturController@getDonatur');
+
+    $app->post('donatur','DonaturController@createDonatur');
+
+    $app->put('donatur/{id}','DonaturController@updateDonatur');
+
+    $app->delete('donatur/{id}','DonaturController@deleteDonatur');
+});
