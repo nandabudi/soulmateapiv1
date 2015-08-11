@@ -10,13 +10,19 @@ use Everyman\Neo4j\Client;
 
 class DonaturController extends Controller{
 
+  public $_host = 'localhost';
+  public $_port = 7474;
+  public $_userNeo4j = 'neo4j';
+  public $_passNeo4j = 'soulmate';
+  public $_label = 'Donatur';
+
   public function loginDonatur(Request $request){
-    $client = new Client('localhost', 7474);
+    $client = new Client($this->_host, $this->_port);
     $client->getTransport()
-      ->setAuth('neo4j', 'soulmate');
+      ->setAuth($this->_userNeo4j, $this->_passNeo4j);
     $username =  $request->input('username');
-    $password =  $request->input('password');
-    $cypher = 'MATCH (n:Muzakki) where n.username="'.$username.'" and n.password = "'.$password.'" RETURN n as muzakki';
+    $password =  sha1($request->input('password'));
+    $cypher = 'MATCH (n:'.$this->_label.') where n.username="'.$username.'" and n.password = "'.$password.'" RETURN n';
     $query = new Query($client, $cypher);
     $nodes = $query->getResultSet();
     $status = 'failed';
@@ -24,9 +30,9 @@ class DonaturController extends Controller{
     if(count($nodes) > 0){
       $status = 'success';
       foreach($nodes as $node){
-        $properties['id'] = $node['muzakki']->getId();
-        $properties['username'] = $node['muzakki']->getProperty('username');
-        $properties['password'] = $node['muzakki']->getProperty('password');
+        $properties['id'] = $node['n']->getId();
+        $properties['username'] = $node['n']->getProperty('username');
+        $properties['password'] = $node['n']->getProperty('password');
       }
     }
 
@@ -34,13 +40,10 @@ class DonaturController extends Controller{
   }
 
   public function index(){
-    // $client = new Client('localhost', 7474);
-    // $client->getTransport()
-    //   ->setAuth('neo4j', 'soulmate');
-    $client = new Client('localhost', 7474);
+    $client = new Client($this->_host, $this->_port);
     $client->getTransport()
-      ->setAuth('neo4j', 'soulmate');
-    $label = $client->makeLabel('Muzakki');
+      ->setAuth($this->_userNeo4j, $this->_passNeo4j);
+    $label = $client->makeLabel($this->_label);
     $nodes = $label->getNodes();
     $status = 'success';
     $result = array();
@@ -54,9 +57,9 @@ class DonaturController extends Controller{
   }
 
   public function getDonatur($id){
-    $client = new Client('localhost', 7474);
+    $client = new Client($this->_host, $this->_port);
     $client->getTransport()
-      ->setAuth('neo4j', 'soulmate');
+      ->setAuth($this->_userNeo4j, $this->_passNeo4j);
     $nodes = $client->getNode($id);
     $status = 'failed';
     $properties = array();
@@ -69,41 +72,59 @@ class DonaturController extends Controller{
   }
 
   public function createDonatur(Request $request){
-
-      // $Book = Book::create($request->all());
-      $client = new Client('localhost', 7474);
+      $client = new Client($this->_host, $this->_port);
       $client->getTransport()
-        ->setAuth('neo4j', 'soulmate');
-      $transaction = $client->beginTransaction();
-      // Add a single query to a transaction, $result is a single ResultSet object
-      $label = 'Muzakki';
-      $param = 'nanda';
-      $cypher = 'CREATE (n:'.$label.' {username:"'.$param.'",password:"nanda"}) return n';
-      $query = new Query($client, $cypher);
-      $result = $query->getResultSet();
+        ->setAuth($this->_userNeo4j, $this->_passNeo4j);
+      $username =  $request->input('username');
+      $password =  sha1($request->input('password'));
       $status = 'failed';
-      if ($transaction->commit()){
-        $status = 'success';
+      if(count($username) > 0 && count($password) > 0 ){
+        $cypherCek = 'MATCH (n:'.$this->_label.') where n.username="'.$username.'" and n.password = "'.$password.'" RETURN n';
+        $queryCek = new Query($client, $cypherCek);
+        $resultCek = $queryCek->getResultSet();
+        if(count($resultCek) > 0){
+          $status = 'failed, data already created';
+        }else{
+          $cypher = 'CREATE (n:'.$this->_label.' {username:"'.$username.'",password:"'.$password.'"}) return n';
+          $query = new Query($client, $cypher);
+          $query->getResultSet();
+          $status = 'success';
+        }
       }
       return response()->json(array('status' => $status));
-
   }
 
   public function deleteDonatur($id){
-      $Book  = Book::find($id);
-      $Book->delete();
-
-      return response()->json('deleted');
+    $client = new Client($this->_host, $this->_port);
+    $client->getTransport()
+      ->setAuth($this->_userNeo4j, $this->_passNeo4j);
+    $node = $client->getNode($id);
+    $status = 'failed';
+    if(count($node) > 0){
+      $node->delete();
+      $status = 'success';
+    }
+    return response()->json(array('status' => $status));
   }
 
   public function updateDonatur(Request $request,$id){
-      $Book  = Book::find($id);
-      $Book->title = $request->input('title');
-      $Book->author = $request->input('author');
-      $Book->isbn = $request->input('isbn');
-      $Book->save();
-
-      return response()->json($Book);
+    $client = new Client($this->_host, $this->_port);
+    $client->getTransport()
+      ->setAuth($this->_userNeo4j, $this->_passNeo4j);
+    $username = $request->input('username');
+    $status = 'failed';
+    $cypherCek = 'MATCH (n:'.$this->_label.') where n.username="'.$username.'" RETURN n';
+    $queryCek = new Query($client, $cypherCek);
+    $resultCek = $queryCek->getResultSet();
+    if(count($resultCek) > 0){
+      $status = 'failed, data already exist';
+    }else{
+      $node = $client->getNode($id);
+      $node->setProperty('username', $username)
+      ->save();
+      $status = 'success';
+    }
+    return response()->json(array('status' => $status));
   }
 }
 ?>
