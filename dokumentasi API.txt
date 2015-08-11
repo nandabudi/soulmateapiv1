@@ -1,0 +1,26 @@
+login
+post('uri/login');
+post http://localhost:8000/api/v1/login
+parameter : username,password
+
+
+ambil semua data
+get('uri/donatur');
+get http://localhost:8000/api/v1/donatur/
+
+ambil data by id
+get('uri/donatur/{id}');
+get http://localhost:8000/api/v1/donatur/45
+
+tambah data
+post('uri/donatur');
+post http://localhost:8000/api/v1/donatur
+paramater : username,password,email,nama,notelp,imagePath
+
+hapus data
+delete ('uri/donatur/{id}');
+delete http://localhost:8000/api/v1/donatur/45
+
+edit data
+put ('uri/donatur/{id}');
+put http://localhost:8000/api/v1/donatur/45?username=budi&email=nbprayuga@gmail.com&nama=nanda&notelp=081320427705&imagePath=

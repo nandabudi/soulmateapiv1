@@ -77,6 +77,10 @@ class DonaturController extends Controller{
         ->setAuth($this->_userNeo4j, $this->_passNeo4j);
       $username =  $request->input('username');
       $password =  sha1($request->input('password'));
+      $email = $request->input('email');
+      $nama = $request->input('nama');
+      $notelp = $request->input('notelp');
+      $imagePath = $request->input('imagePath');
       $status = 'failed';
       if(count($username) > 0 && count($password) > 0 ){
         $cypherCek = 'MATCH (n:'.$this->_label.') where n.username="'.$username.'" and n.password = "'.$password.'" RETURN n';
@@ -85,7 +89,7 @@ class DonaturController extends Controller{
         if(count($resultCek) > 0){
           $status = 'failed, data already created';
         }else{
-          $cypher = 'CREATE (n:'.$this->_label.' {username:"'.$username.'",password:"'.$password.'"}) return n';
+          $cypher = 'CREATE (n:'.$this->_label.' {username:"'.$username.'",password:"'.$password.'",email:"'.$email.'",nama:"'.$nama.'",notelp:"'.$notelp.'",imagePath:"'.$imagePath.'"}) return n';
           $query = new Query($client, $cypher);
           $query->getResultSet();
           $status = 'success';
@@ -112,6 +116,10 @@ class DonaturController extends Controller{
     $client->getTransport()
       ->setAuth($this->_userNeo4j, $this->_passNeo4j);
     $username = $request->input('username');
+    $email = $request->input('email');
+    $nama = $request->input('nama');
+    $notelp = $request->input('notelp');
+    $imagePath = $request->input('imagePath');
     $status = 'failed';
     $cypherCek = 'MATCH (n:'.$this->_label.') where n.username="'.$username.'" RETURN n';
     $queryCek = new Query($client, $cypherCek);
@@ -121,6 +129,10 @@ class DonaturController extends Controller{
     }else{
       $node = $client->getNode($id);
       $node->setProperty('username', $username)
+      ->setProperty('email', $email)
+      ->setProperty('nama', $nama)
+      ->setProperty('notelp', $notelp)
+      ->setProperty('imagePath', $imagePath)
       ->save();
       $status = 'success';
     }
