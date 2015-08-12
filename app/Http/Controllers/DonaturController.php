@@ -91,19 +91,19 @@ class DonaturController extends Controller{
         $imagePath = $this->_uriImage.$filename;
         Image::make($image->getRealPath())->save($imageSave);
       }
-      if(count($username) > 0 && count($password) > 0 ){
-        $cypherCek = 'MATCH (n:'.$this->_label.') where n.username="'.$username.'" and n.password = "'.$password.'" RETURN n';
-        $queryCek = new Query($client, $cypherCek);
-        $resultCek = $queryCek->getResultSet();
-        if(count($resultCek) > 0){
-          $status = 'failed, data already created';
-        }else{
-          $cypher = 'CREATE (n:'.$this->_label.' {username:"'.$username.'",password:"'.$password.'",email:"'.$email.'",nama:"'.$nama.'",notelp:"'.$notelp.'",imagePath:"'.$imagePath.'"}) return n';
-          $query = new Query($client, $cypher);
-          $query->getResultSet();
-          $status = 'success';
-        }
-      }
+      // if(count($username) > 0 && count($password) > 0 ){
+      //   $cypherCek = 'MATCH (n:'.$this->_label.') where n.username="'.$username.'" and n.password = "'.$password.'" RETURN n';
+      //   $queryCek = new Query($client, $cypherCek);
+      //   $resultCek = $queryCek->getResultSet();
+      //   if(count($resultCek) > 0){
+      //     $status = 'failed, data already created';
+      //   }else{
+      //     $cypher = 'CREATE (n:'.$this->_label.' {username:"'.$username.'",password:"'.$password.'",email:"'.$email.'",nama:"'.$nama.'",notelp:"'.$notelp.'",imagePath:"'.$imagePath.'"}) return n';
+      //     $query = new Query($client, $cypher);
+      //     $query->getResultSet();
+      //     $status = 'success';
+      //   }
+      // }
       return response()->json(array('status' => $status));
   }
 
