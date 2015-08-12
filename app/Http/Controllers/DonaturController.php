@@ -89,7 +89,7 @@ class DonaturController extends Controller{
         $filename  = $username.'-'. time() . '.' . $image->getClientOriginalExtension();
         $imageSave = base_path().'/storage/pics/'.$filename;
         $imagePath = $this->_uriImage.$filename;
-        echo $imagePath;
+        // echo $imagePath;
         Image::make($image->getRealPath())->save($imageSave);
       }
       // if(count($username) > 0 && count($password) > 0 ){
