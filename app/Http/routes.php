@@ -18,7 +18,8 @@ $app->get('/', function () use ($app) {
 
 $app->get('api/v1/images/{filename}', function ($filename)
 {
-  $img = Image::make(storage_path() . '/pics/' . $filename);
+  Echo ini_get ("upload_max_filesize");
+  // $img = Image::make(storage_path() . '/pics/' . $filename);
   // return $img->response();
   // echo "coba";
 });
