@@ -88,8 +88,9 @@ class DonaturController extends Controller{
         $image = $request->file('imagePath');
         $filename  = $username.'-'. time() . '.' . $image->getClientOriginalExtension();
         $imageSave = base_path().'/storage/pics/'.$filename;
-        $imagePath = $this->_uriImage.$filename;
-        Image::make($image->getRealPath())->save($imageSave);
+        echo $imageSave;
+        // $imagePath = $this->_uriImage.$filename;
+        // Image::make($image->getRealPath())->save($imageSave);
       }
       // if(count($username) > 0 && count($password) > 0 ){
       //   $cypherCek = 'MATCH (n:'.$this->_label.') where n.username="'.$username.'" and n.password = "'.$password.'" RETURN n';
