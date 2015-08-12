@@ -1,3 +1,5 @@
+Donatur
+
 login
 post('uri/login');
 post http://soulmateapi.cloudapp.net/api/v1/login
@@ -24,3 +26,34 @@ delete http://soulmateapi.cloudapp.net/api/v1/donatur/45
 edit data
 put ('uri/donatur/{id}');
 put http://soulmateapi.cloudapp.net/api/v1/donatur/45?username=budi&email=nbprayuga@gmail.com&nama=nanda&notelp=081320427705&imagePath=
+
+
+Mustahiq
+
+ambil semua data
+get('uri/mustahiq');
+get http://soulmateapi.cloudapp.net/api/v1/mustahiq/
+
+ambil data by id
+get('uri/mustahiq/{id}');
+get http://soulmateapi.cloudapp.net/api/v1/mustahiq/45
+
+ambil data by kategori
+get('uri/mustahiq/kategori/{id}');
+get http://soulmateapi.cloudapp.net/api/v1/mustahiq/kategori/pendidikan
+
+tambah data
+post('uri/mustahiq');
+post http://soulmateapi.cloudapp.net/api/v1/mustahiq
+paramater : nama,desc,tempatLahir,tanggalLahir,nominal,jarak,
+            alamat,latlong,status,jenjangPendidikan,asalSekolah,alamatSekolah
+            namaOrangTua,alamatOrangTua,pekerjaanOrangTua,tipeBantuan,kategori,imagePath
+
+
+hapus data
+delete ('uri/mustahiq/{id}');
+delete http://soulmateapi.cloudapp.net/api/v1/mustahiq/45
+
+edit data
+put ('uri/mustahiq/{id}');
+put http://soulmateapi.cloudapp.net/api/v1/mustahiq/49?nama=isha&desc=isha anak aceh&tempatLahir=aceh&tanggalLahir=07-07-1993&nominal=10000&jarak=1000&alamat=aceh&latlong=-6.090,190.00&status=gabut&jenjangPendidikan=sd&asalSekolah=sd islam dakol&alamatSekolah=aceh&namaOrangTua=ishamudin&alamatOrangTua=aceh&pekerjaanOrangTua=nelayan&tipeBantuan=uang&kategori=pendidikan&imagePath=
