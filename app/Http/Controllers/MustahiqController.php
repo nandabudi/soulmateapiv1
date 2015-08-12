@@ -92,7 +92,7 @@ class MustahiqController extends Controller{
       $persentaseBantuan = 0;
       $prioritas = 'low';
       $imagePath = $request->input('imagePath');
-      $status = 'failed';
+      $statusRequest = 'failed';
       if(count($nama) > 0 && count($latlong) > 0 ){
           $cypher = 'CREATE (n:'.$this->_label.' {nama:"'.$nama.'",desc:"'.$desc.'"
           ,tempatLahir:"'.$tempatLahir.'",tanggalLahir:"'.$tanggalLahir.'",nominal:'.$nominal.'
@@ -102,9 +102,9 @@ class MustahiqController extends Controller{
           ,prioritas:"'.$prioritas.'",imagePath:"'.$imagePath.'"}) return n';
           $query = new Query($client, $cypher);
           $query->getResultSet();
-          $status = 'success';
+          $statusRequest = 'success';
       }
-      return response()->json(array('status' => $status));
+      return response()->json(array('status' => $statusRequest));
   }
 
   public function deleteMustahiq($id){
@@ -142,7 +142,7 @@ class MustahiqController extends Controller{
     $persentaseBantuan = $request->input('persentaseBantuan');
     $prioritas = $request->input('prioritas');
     $imagePath = $request->input('imagePath');
-    $status = 'failed';
+    $statusRequest = 'failed';
     if(count($id) > 0){
       $node = $client->getNode($id);
       $node->setProperty('nama', $nama)
@@ -164,9 +164,9 @@ class MustahiqController extends Controller{
       ->setProperty('imagePath', $imagePath)
       ->setProperty('nominal', $nominal)
       ->save();
-      $status = 'success';
+      $statusRequest = 'success';
     }
-    return response()->json(array('status' => $status));
+    return response()->json(array('status' => $statusRequest));
   }
 }
 ?>
