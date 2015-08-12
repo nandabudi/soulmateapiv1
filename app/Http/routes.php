@@ -10,8 +10,6 @@
 | and give it the Closure to call when that URI is requested.
 |
 */
-use Intervention\Image\Facades\Image;
-// use Intervention\Image\ImageManagerStatic as Image;
 
 $app->get('/', function () use ($app) {
     return $app->welcome();
@@ -19,11 +17,8 @@ $app->get('/', function () use ($app) {
 
 $app->get('api/v1/images/{filename}', function ($filename)
 {
-  // Echo ini_get ("upload_max_filesize");
-  $img = Image::make(storage_path() . '/pics/' . $filename);
-  echo storage_path() . '/pics/' . $filename;
-  // return $img->response();
-  // echo "coba";
+  $path = storage_path() . '/pics/' . $filename;
+  return response()->download($path);
 });
 
 $app->group(['prefix' => 'api/v1','namespace' => 'App\Http\Controllers'], function($app)

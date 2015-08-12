@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Everyman\Neo4j\Cypher\Query;
 use Everyman\Neo4j\Client;
-use Intervention\Image\ImageManagerStatic as Image;
 
 class DonaturController extends Controller{
 
@@ -87,9 +86,9 @@ class DonaturController extends Controller{
       if($request->file()){
         $image = $request->file('imagePath');
         $filename  = $username.'-'. time() . '.' . $image->getClientOriginalExtension();
-        $imageSave = base_path().'/storage/pics/'.$filename;
+        $imageSave = base_path().'/storage/pics/';
         $imagePath = $this->_uriImage.$filename;
-        Image::make($image->getRealPath())->save($imageSave);
+        $request->file('imagePath')->move($imageSave,$filename);
       }
       if(count($username) > 0 && count($password) > 0 ){
         $cypherCek = 'MATCH (n:'.$this->_label.') where n.username="'.$username.'" and n.password = "'.$password.'" RETURN n';
