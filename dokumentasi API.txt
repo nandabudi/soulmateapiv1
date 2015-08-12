@@ -45,9 +45,9 @@ get http://soulmateapi.cloudapp.net/api/v1/mustahiq/kategori/pendidikan
 tambah data
 post('uri/mustahiq');
 post http://soulmateapi.cloudapp.net/api/v1/mustahiq
-paramater : nama,desc,tempatLahir,tanggalLahir,nominal,jarak,
+paramater : nama,desc,tempatLahir,tanggalLahir,nominal,
             alamat,latlong,status,jenjangPendidikan,asalSekolah,alamatSekolah
-            namaOrangTua,alamatOrangTua,pekerjaanOrangTua,tipeBantuan,kategori,imagePath
+            namaOrangTua,alamatOrangTua,pekerjaanOrangTua,kategori,imagePath
 
 
 hapus data
