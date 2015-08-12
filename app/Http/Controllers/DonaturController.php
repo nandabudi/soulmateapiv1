@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Everyman\Neo4j\Cypher\Query;
 use Everyman\Neo4j\Client;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class DonaturController extends Controller{
 
@@ -15,6 +16,7 @@ class DonaturController extends Controller{
   public $_userNeo4j = 'neo4j';
   public $_passNeo4j = 'soulmate';
   public $_label = 'Donatur';
+  public $_uriImage = 'http://soulmateapi.cloudapp.net/api/v1/images/';
 
   public function loginDonatur(Request $request){
     $client = new Client($this->_host, $this->_port);
@@ -80,8 +82,15 @@ class DonaturController extends Controller{
       $email = $request->input('email');
       $nama = $request->input('nama');
       $notelp = $request->input('notelp');
-      $imagePath = $request->input('imagePath');
       $status = 'failed';
+      $imagePath = '';
+      if($request->file()){
+        $image = $request->file('imagePath');
+        $filename  = $username.'-'. time() . '.' . $image->getClientOriginalExtension();
+        $imageSave = base_path().'/storage/pics/'.$filename;
+        $imagePath = $this->_uriImage.$filename;
+        Image::make($image->getRealPath())->save($imageSave);
+      }
       if(count($username) > 0 && count($password) > 0 ){
         $cypherCek = 'MATCH (n:'.$this->_label.') where n.username="'.$username.'" and n.password = "'.$password.'" RETURN n';
         $queryCek = new Query($client, $cypherCek);

@@ -10,9 +10,16 @@
 | and give it the Closure to call when that URI is requested.
 |
 */
+use Intervention\Image\ImageManagerStatic as Image;
 
 $app->get('/', function () use ($app) {
     return $app->welcome();
+});
+
+$app->get('api/v1/images/{filename}', function ($filename)
+{
+  $img = Image::make(storage_path() . '/pics/' . $filename);
+  return $img->response();
 });
 
 $app->group(['prefix' => 'api/v1','namespace' => 'App\Http\Controllers'], function($app)

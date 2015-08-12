@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Everyman\Neo4j\Cypher\Query;
 use Everyman\Neo4j\Client;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class MustahiqController extends Controller{
 
@@ -15,7 +16,7 @@ class MustahiqController extends Controller{
   public $_userNeo4j = 'neo4j';
   public $_passNeo4j = 'soulmate';
   public $_label = 'Mustahiq';
-
+  public $_uriImage = 'http://soulmateapi.cloudapp.net/api/v1/images/';
 
   public function index(){
     $client = new Client($this->_host, $this->_port);
@@ -91,8 +92,15 @@ class MustahiqController extends Controller{
       $kategori = $request->input('kategori');
       $persentaseBantuan = 0;
       $prioritas = 'low';
-      $imagePath = $request->input('imagePath');
       $statusRequest = 'failed';
+      $imagePath = '';
+      if($request->file()){
+        $image = $request->file('imagePath');
+        $filename  = $nama.'-'. time() . '.' . $image->getClientOriginalExtension();
+        $imageSave = base_path().'/storage/pics/'.$filename;
+        $imagePath = $this->_uriImage.$filename;
+        Image::make($image->getRealPath())->save($imageSave);
+      }
       if(count($nama) > 0 && count($latlong) > 0 ){
           $cypher = 'CREATE (n:'.$this->_label.' {nama:"'.$nama.'",desc:"'.$desc.'"
           ,tempatLahir:"'.$tempatLahir.'",tanggalLahir:"'.$tanggalLahir.'",nominal:'.$nominal.'
