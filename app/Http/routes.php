@@ -10,6 +10,7 @@
 | and give it the Closure to call when that URI is requested.
 |
 */
+use Intervention\Image\Facades\Image;
 use Intervention\Image\ImageManagerStatic as Image;
 
 $app->get('/', function () use ($app) {
