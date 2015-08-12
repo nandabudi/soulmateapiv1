@@ -11,7 +11,7 @@
 |
 */
 use Intervention\Image\Facades\Image;
-use Intervention\Image\ImageManagerStatic as Image;
+// use Intervention\Image\ImageManagerStatic as Image;
 
 $app->get('/', function () use ($app) {
     return $app->welcome();
