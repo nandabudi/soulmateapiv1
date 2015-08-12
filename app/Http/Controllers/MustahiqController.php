@@ -79,7 +79,6 @@ class MustahiqController extends Controller{
       $tempatLahir = $request->input('tempatLahir');
       $tanggalLahir = $request->input('tanggalLahir');
       $nominal = $request->input('nominal');
-      $jarak = $request->input('jarak');
       $alamat = $request->input('alamat');
       $latlong = $request->input('latlong');
       $status = $request->input('status');
@@ -89,18 +88,17 @@ class MustahiqController extends Controller{
       $namaOrangTua = $request->input('namaOrangTua');
       $alamatOrangTua = $request->input('alamatOrangTua');
       $pekerjaanOrangTua = $request->input('pekerjaanOrangTua');
-      $tipeBantuan = $request->input('tipeBantuan');
       $kategori = $request->input('kategori');
-      $persentaseBantaun = 0;
+      $persentaseBantuan = 0;
       $prioritas = 'low';
       $imagePath = $request->input('imagePath');
       $status = 'failed';
       if(count($nama) > 0 && count($latlong) > 0 ){
           $cypher = 'CREATE (n:'.$this->_label.' {nama:"'.$nama.'",desc:"'.$desc.'"
-          ,tempatLahir:"'.$tempatLahir.'",tanggalLahir:"'.$tanggalLahir.'",nominal:'.$nominal.',jarak:'.$jarak.'
+          ,tempatLahir:"'.$tempatLahir.'",tanggalLahir:"'.$tanggalLahir.'",nominal:'.$nominal.'
           ,alamat:"'.$alamat.'",latlong:"'.$latlong.'",status:"'.$status.'",jenjangPendidikan:"'.$jenjangPendidikan.'"
           ,asalSekolah:"'.$asalSekolah.'",alamatSekolah:"'.$alamatSekolah.'",namaOrangTua:"'.$namaOrangTua.'",alamatOrangTua:"'.$alamatOrangTua.'"
-          ,pekerjaanOrangTua:"'.$pekerjaanOrangTua.'",tipeBantuan:"'.$tipeBantuan.'",kategori:"'.$kategori.'",persentaseBantaun:'.$persentaseBantaun.'
+          ,pekerjaanOrangTua:"'.$pekerjaanOrangTua.'",kategori:"'.$kategori.'",persentaseBantuan:'.$persentaseBantuan.'
           ,prioritas:"'.$prioritas.'",imagePath:"'.$imagePath.'"}) return n';
           $query = new Query($client, $cypher);
           $query->getResultSet();
@@ -131,7 +129,6 @@ class MustahiqController extends Controller{
     $tempatLahir = $request->input('tempatLahir');
     $tanggalLahir = $request->input('tanggalLahir');
     $nominal = $request->input('nominal');
-    $jarak = $request->input('jarak');
     $alamat = $request->input('alamat');
     $latlong = $request->input('latlong');
     $status = $request->input('status');
@@ -141,9 +138,8 @@ class MustahiqController extends Controller{
     $namaOrangTua = $request->input('namaOrangTua');
     $alamatOrangTua = $request->input('alamatOrangTua');
     $pekerjaanOrangTua = $request->input('pekerjaanOrangTua');
-    $tipeBantuan = $request->input('tipeBantuan');
     $kategori = $request->input('kategori');
-    $persentaseBantuan = $request->input('persentaseBantaun');
+    $persentaseBantuan = $request->input('persentaseBantuan');
     $prioritas = $request->input('prioritas');
     $imagePath = $request->input('imagePath');
     $status = 'failed';
@@ -153,7 +149,6 @@ class MustahiqController extends Controller{
       ->setProperty('desc', $desc)
       ->setProperty('tempatLahir', $tempatLahir)
       ->setProperty('tanggalLahir', $tanggalLahir)
-      ->setProperty('jarak', $jarak)
       ->setProperty('alamat', $alamat)
       ->setProperty('latlong', $latlong)
       ->setProperty('status', $status)
@@ -163,7 +158,6 @@ class MustahiqController extends Controller{
       ->setProperty('namaOrangTua', $namaOrangTua)
       ->setProperty('alamatOrangTua', $alamatOrangTua)
       ->setProperty('pekerjaanOrangTua', $pekerjaanOrangTua)
-      ->setProperty('tipeBantuan', $tipeBantuan)
       ->setProperty('kategori', $kategori)
       ->setProperty('persentaseBantuan', $persentaseBantuan)
       ->setProperty('prioritas', $prioritas)
