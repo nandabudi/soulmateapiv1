@@ -17,15 +17,19 @@ $app->get('/', function () use ($app) {
 
 $app->group(['prefix' => 'api/v1','namespace' => 'App\Http\Controllers'], function($app)
 {
-    $app->post('login','DonaturController@loginDonatur');
+  // donatur routes
+  $app->post('login','DonaturController@loginDonatur');
+  $app->get('donatur','DonaturController@index');
+  $app->get('donatur/{id}','DonaturController@getDonatur');
+  $app->post('donatur','DonaturController@createDonatur');
+  $app->put('donatur/{id}','DonaturController@updateDonatur');
+  $app->delete('donatur/{id}','DonaturController@deleteDonatur');
 
-    $app->get('donatur','DonaturController@index');
-
-    $app->get('donatur/{id}','DonaturController@getDonatur');
-
-    $app->post('donatur','DonaturController@createDonatur');
-
-    $app->put('donatur/{id}','DonaturController@updateDonatur');
-
-    $app->delete('donatur/{id}','DonaturController@deleteDonatur');
+  // mustahiq routes
+  $app->get('mustahiq','MustahiqController@index');
+  $app->get('mustahiq/{id}','MustahiqController@getMustahiq');
+  $app->get('mustahiq/kategori/{id}','MustahiqController@getMustahiqByKategori');
+  $app->post('mustahiq','MustahiqController@createMustahiq');
+  $app->put('mustahiq/{id}','MustahiqController@updateMustahiq');
+  $app->delete('mustahiq/{id}','MustahiqController@deleteMustahiq');
 });
