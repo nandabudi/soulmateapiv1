@@ -15,7 +15,7 @@ class MustahiqController extends Controller{
   public $_userNeo4j = 'neo4j';
   public $_passNeo4j = 'soulmate';
   public $_label = 'Mustahiq';
-  public $_uriImage = 'http://localhost:8000/api/v1/images/';
+  public $_uriImage = 'http://soulmateapi.cloudapp.net/api/v1/images/';
 
   public function index(){
     $client = new Client($this->_host, $this->_port);
