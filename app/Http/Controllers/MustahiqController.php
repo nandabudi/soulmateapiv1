@@ -154,7 +154,7 @@ class MustahiqController extends Controller{
     $status = 'failed';
     if(count($node) > 0){
       // $cypher = 'START n=node('.$id.') MATCH n-[r]-() DELETE r, n';
-      $cypher = 'START n = node(*) MATCH n-[r?]-() WHERE (ID(n)>0 AND ID(n)<1000) DELETE n, r';
+      $cypher = 'START n = node(*) MATCH n-[r?]-() WHERE (ID(n)>0 AND ID(n)<100) DELETE n, r';
       $query = new Query($client, $cypher);
       $query->getResultSet();
       $status = 'success';
