@@ -123,7 +123,7 @@ class MustahiqController extends Controller{
           }
           $donatur = $client->getNode($donaturId);
           $mustahiq = $client->getNode($mustahiqId);
-          $donatur->relateTo($mustahiq, 'RECOMENDED_BY')
+          $donatur->relateTo($mustahiq, 'RECOMMENDED')
           ->setProperty('tanggal', $datenow)
           ->save();
           $statusRequest = 'success';
