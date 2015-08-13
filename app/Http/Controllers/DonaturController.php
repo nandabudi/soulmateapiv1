@@ -122,6 +122,17 @@ class DonaturController extends Controller{
     return response()->json(array('status' => $status));
   }
 
+  public function deleteAllDonatur(){
+    $client = new Client($this->_host, $this->_port);
+    $client->getTransport()
+      ->setAuth($this->_userNeo4j, $this->_passNeo4j);
+    $cypher = 'MATCH (n:Donatur) OPTIONAL MATCH (n)-[r]-() DELETE n,r';
+    $query = new Query($client, $cypher);
+    $query->getResultSet();
+    $status = 'success';
+    return response()->json(array('status' => $status));
+  }
+
   public function updateDonatur(Request $request,$id){
     $client = new Client($this->_host, $this->_port);
     $client->getTransport()

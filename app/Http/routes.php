@@ -30,6 +30,7 @@ $app->group(['prefix' => 'api/v1','namespace' => 'App\Http\Controllers'], functi
   $app->post('donatur','DonaturController@createDonatur');
   $app->put('donatur/{id}','DonaturController@updateDonatur');
   $app->delete('donatur/{id}','DonaturController@deleteDonatur');
+  $app->delete('donatur/deleteall','DonaturController@deleteAllDonatur');
 
   // mustahiq routes
   $app->get('mustahiq','MustahiqController@index');
