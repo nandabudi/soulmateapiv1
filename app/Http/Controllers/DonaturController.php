@@ -82,14 +82,17 @@ class DonaturController extends Controller{
       $nama = $request->input('nama');
       $notelp = $request->input('notelp');
       $status = 'failed';
-      $imagePath = '';
-      if($request->file()){
-        $image = $request->file('imagePath');
-        $filename  = $username.'-'. time() . '.' . $image->getClientOriginalExtension();
-        $imageSave = base_path().'/storage/pics/';
-        $imagePath = $this->_uriImage.$filename;
-        $request->file('imagePath')->move($imageSave,$filename);
-      }
+
+      //image upload handler
+      $image = $request->input('imagePath');
+      $filename  = $username.'-'. time() . '.jpg' ;
+      $imageSave = base_path().'/storage/pics/';
+      $imagePath = $this->_uriImage.$filename;
+      $binary=base64_decode($image);
+      header('Content-Type: bitmap; charset=utf-8');
+      $file = fopen($imageSave.$filename, 'wb');
+      fwrite($file, $binary);
+      fclose($file);
       if(count($username) > 0 && count($password) > 0 ){
         $cypherCek = 'MATCH (n:'.$this->_label.') where n.username="'.$username.'" and n.password = "'.$password.'" RETURN n';
         $queryCek = new Query($client, $cypherCek);
