@@ -138,7 +138,9 @@ class MustahiqController extends Controller{
     $node = $client->getNode($id);
     $status = 'failed';
     if(count($node) > 0){
-      $node->delete();
+      $cypher = 'START n=node('.$id.') MATCH n-[r]-() DELETE r, n';
+      $query = new Query($client, $cypher);
+      $query->getResultSet();
       $status = 'success';
     }
     return response()->json(array('status' => $status));
