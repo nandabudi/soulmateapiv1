@@ -89,6 +89,7 @@ class MustahiqController extends Controller{
     $alamatOrangTua = $request->input('alamatOrangTua');
     $pekerjaanOrangTua = $request->input('pekerjaanOrangTua');
     $kategori = $request->input('kategori');
+    $donaturId = $request->input('donaturId');
     $persentaseBantuan = 0;
     $prioritas = 'low';
     $statusRequest = 'failed';
@@ -111,7 +112,19 @@ class MustahiqController extends Controller{
         ,pekerjaanOrangTua:"'.$pekerjaanOrangTua.'",kategori:"'.$kategori.'",persentaseBantuan:'.$persentaseBantuan.'
         ,prioritas:"'.$prioritas.'",imagePath:"'.$imagePath.'"}) return n';
         $query = new Query($client, $cypher);
-        $query->getResultSet();
+        $nodes = $query->getResultSet();
+
+        // add mustahiq relationship
+        $datenow = date('Y-m-d H:i:s');
+        $mustahiqId = 0;
+        foreach($nodes as $node){
+           $mustahiqId = $node['n']->getId();
+        }
+        $donatur = $client->getNode($donaturId);
+        $mustahiq = $client->getNode($mustahiqId);
+        $donatur->relateTo($mustahiq, 'RECOMENDED_BY')
+        ->setProperty('tanggal', $datenow)
+        ->save();
         $statusRequest = 'success';
     }
     return response()->json(array('status' => $statusRequest));
