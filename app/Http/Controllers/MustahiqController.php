@@ -138,8 +138,23 @@ class MustahiqController extends Controller{
     $node = $client->getNode($id);
     $status = 'failed';
     if(count($node) > 0){
+      $cypher = 'START n=node('.$id.') MATCH n-[r]-() DELETE r, n';
+      $query = new Query($client, $cypher);
+      $query->getResultSet();
+      $status = 'success';
+    }
+    return response()->json(array('status' => $status));
+  }
+
+  public function deleteAllMustahiq(){
+    $client = new Client($this->_host, $this->_port);
+    $client->getTransport()
+      ->setAuth($this->_userNeo4j, $this->_passNeo4j);
+    $node = $client->getNode($id);
+    $status = 'failed';
+    if(count($node) > 0){
       // $cypher = 'START n=node('.$id.') MATCH n-[r]-() DELETE r, n';
-      $cypher = 'START n = node(*) MATCH n-[r?]-() WHERE (ID(n)>0 AND ID(n)<100) DELETE n, r';
+      $cypher = 'START n = node(*) MATCH n-[r?]-() WHERE (ID(n)>0 AND ID(n)<1000) DELETE n, r';
       $query = new Query($client, $cypher);
       $query->getResultSet();
       $status = 'success';
