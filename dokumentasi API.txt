@@ -47,7 +47,7 @@ post('uri/mustahiq');
 post http://soulmateapi.cloudapp.net/api/v1/mustahiq
 paramater : nama,desc,tempatLahir,tanggalLahir,nominal,
             alamat,latlong,status,jenjangPendidikan,asalSekolah,alamatSekolah
-            namaOrangTua,alamatOrangTua,pekerjaanOrangTua,kategori,imagePath
+            namaOrangTua,alamatOrangTua,pekerjaanOrangTua,kategori,imagePath,donaturId
 
 
 hapus data
