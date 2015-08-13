@@ -150,7 +150,7 @@ class MustahiqController extends Controller{
     $client = new Client($this->_host, $this->_port);
     $client->getTransport()
       ->setAuth($this->_userNeo4j, $this->_passNeo4j);
-    $cypher = 'START n = node(*) MATCH n-[r]-() WHERE (ID(n)>0 AND ID(n)<1000) DELETE n, r';
+    $cypher = 'MATCH (n:Mustahiq) OPTIONAL MATCH (n)-[r]-() DELETE n,r';
     $query = new Query($client, $cypher);
     $query->getResultSet();
     $status = 'success';
