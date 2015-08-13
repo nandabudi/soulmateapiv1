@@ -38,5 +38,5 @@ $app->group(['prefix' => 'api/v1','namespace' => 'App\Http\Controllers'], functi
   $app->post('mustahiq','MustahiqController@createMustahiq');
   $app->put('mustahiq/{id}','MustahiqController@updateMustahiq');
   $app->delete('mustahiq/{id}','MustahiqController@deleteMustahiq');
-  $app->delete('deleteAllmustahiq','MustahiqController@deleteAllMustahiq');
+  $app->delete('mustahiq/deleteall','MustahiqController@deleteAllMustahiq');
 });
