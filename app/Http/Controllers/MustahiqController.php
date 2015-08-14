@@ -97,7 +97,7 @@ class MustahiqController extends Controller{
       $statusRequest = 'failed';
       //image upload handler
       $image = $request->input('imagePath');
-      $filename  = $nama.'-'. time() . '.jpg' ;
+      $filename  = $tanggalLahir.'-'. time() . '.jpg' ;
       $imageSave = base_path().'/storage/pics/';
       $imagePath = $this->_uriImage.$filename;
       $binary=base64_decode($image);
