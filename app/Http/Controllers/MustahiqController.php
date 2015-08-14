@@ -71,68 +71,66 @@ class MustahiqController extends Controller{
   }
 
   public function createMustahiq(Request $request){
-      $client = new Client($this->_host, $this->_port);
-      $client->getTransport()
-        ->setAuth($this->_userNeo4j, $this->_passNeo4j);
-      $nama = $request->input('nama');
-      $desc = $request->input('desc');
-      $tempatLahir = $request->input('tempatLahir');
-      $tanggalLahir = $request->input('tanggalLahir');
-      $nominal = $request->input('nominal');
-      $alamat = $request->input('alamat');
-      $latlong = $request->input('latlong');
-      $status = $request->input('status');
-      $jenjangPendidikan = $request->input('jenjangPendidikan');
-      $asalSekolah = $request->input('asalSekolah');
-      $alamatSekolah = $request->input('alamatSekolah');
-      $namaOrangTua = $request->input('namaOrangTua');
-      $alamatOrangTua = $request->input('alamatOrangTua');
-      $pekerjaanOrangTua = $request->input('pekerjaanOrangTua');
-      $kategori = $request->input('kategori');
-      $donaturId = $request->input('donaturId');
-      $tahunLahir = $request->input('tahunLahir');
-      $persentaseBantuan = 0;
-      $prioritas = 'low';
-      $isApproved = 'NO';
-      $statusRequest = 'failed';
+    $client = new Client($this->_host, $this->_port);
+    $client->getTransport()
+      ->setAuth($this->_userNeo4j, $this->_passNeo4j);
+    $nama = $request->input('nama');
+    $desc = $request->input('desc');
+    $tempatLahir = $request->input('tempatLahir');
+    $tanggalLahir = $request->input('tanggalLahir');
+    $nominal = $request->input('nominal');
+    $alamat = $request->input('alamat');
+    $latlong = $request->input('latlong');
+    $status = $request->input('status');
+    $jenjangPendidikan = $request->input('jenjangPendidikan');
+    $asalSekolah = $request->input('asalSekolah');
+    $alamatSekolah = $request->input('alamatSekolah');
+    $namaOrangTua = $request->input('namaOrangTua');
+    $alamatOrangTua = $request->input('alamatOrangTua');
+    $pekerjaanOrangTua = $request->input('pekerjaanOrangTua');
+    $kategori = $request->input('kategori');
+    $donaturId = $request->input('donaturId');
+    $tahunLahir = $request->input('tahunLahir');
+    $persentaseBantuan = 0;
+    $prioritas = 'low';
+    $isApproved = 'NO';
+    $statusRequest = 'failed';
 
-      //image upload handler
-      // $image = $request->input('imagePath');
-      // $filename  = $tahunLahir.'-'. time() . '.jpg' ;
-      // $imageSave = base_path().'/storage/pics/';
-      // $imagePath = $this->_uriImage.$filename;
-      // $binary=base64_decode($image);
-      // header('Content-Type: bitmap; charset=utf-8');
-      // $file = fopen($imageSave.$filename, 'wb');
-      // fwrite($file, $binary);
-      // fclose($file);
-      //
-      if(count($nama) > 0 && count($latlong) > 0 ){
+    //image upload handler
+    $image = $request->input('imagePath');
+    $filename  = $tahunLahir.'-'. time() . '.jpg' ;
+    $imageSave = base_path().'/storage/pics/';
+    $imagePath = $this->_uriImage.$filename;
+    $binary=base64_decode($image);
+    header('Content-Type: bitmap; charset=utf-8');
+    $file = fopen($imageSave.$filename, 'wb');
+    fwrite($file, $binary);
+    fclose($file);
+
+    if(count($nama) > 0 && count($latlong) > 0 ){
         $cypher = 'CREATE (n:'.$this->_label.' {nama:"'.$nama.'",desc:"'.$desc.'"
         ,tempatLahir:"'.$tempatLahir.'",tanggalLahir:"'.$tanggalLahir.'",nominal:'.$nominal.'
         ,alamat:"'.$alamat.'",latlong:"'.$latlong.'",status:"'.$status.'",jenjangPendidikan:"'.$jenjangPendidikan.'"
         ,asalSekolah:"'.$asalSekolah.'",alamatSekolah:"'.$alamatSekolah.'",namaOrangTua:"'.$namaOrangTua.'",alamatOrangTua:"'.$alamatOrangTua.'"
         ,pekerjaanOrangTua:"'.$pekerjaanOrangTua.'",kategori:"'.$kategori.'",persentaseBantuan:'.$persentaseBantuan.'
         ,prioritas:"'.$prioritas.'",imagePath:"'.$imagePath.'",isApproved:"'.$isApproved.'",tahunLahir:'.$tahunLahir.'}) return n';
+        $query = new Query($client, $cypher);
+        $nodes = $query->getResultSet();
 
-        print_r($cypher);
-          // $query = new Query($client, $cypher);
-      //     $nodes = $query->getResultSet();
-      //
-      //     // add mustahiq relationship
-      //     $datenow = date('Y-m-d H:i:s');
-      //     $mustahiqId = 0;
-      //     foreach($nodes as $node){
-      //        $mustahiqId = $node['n']->getId();
-      //     }
-      //     $donatur = $client->getNode($donaturId);
-      //     $mustahiq = $client->getNode($mustahiqId);
-      //     $donatur->relateTo($mustahiq, 'RECOMMENDED')
-      //     ->setProperty('tanggal', $datenow)
-      //     ->save();
-          $statusRequest = 'success';
-      }
-      return response()->json(array('status' => $statusRequest));
+        // add mustahiq relationship
+        $datenow = date('Y-m-d H:i:s');
+        $mustahiqId = 0;
+        foreach($nodes as $node){
+           $mustahiqId = $node['n']->getId();
+        }
+        $donatur = $client->getNode($donaturId);
+        $mustahiq = $client->getNode($mustahiqId);
+        $donatur->relateTo($mustahiq, 'RECOMMENDED')
+        ->setProperty('tanggal', $datenow)
+        ->save();
+        $statusRequest = 'success';
+    }
+    return response()->json(array('status' => $statusRequest));
   }
 
   public function deleteMustahiq($id){
