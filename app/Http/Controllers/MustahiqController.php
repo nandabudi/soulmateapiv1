@@ -90,6 +90,7 @@ class MustahiqController extends Controller{
       $pekerjaanOrangTua = $request->input('pekerjaanOrangTua');
       $kategori = $request->input('kategori');
       $donaturId = $request->input('donaturId');
+      $tahunLahir = $request->input('tahunLahir');
       $persentaseBantuan = 0;
       $prioritas = 'low';
       $isApproved = 'NO';
@@ -111,7 +112,7 @@ class MustahiqController extends Controller{
           ,alamat:"'.$alamat.'",latlong:"'.$latlong.'",status:"'.$status.'",jenjangPendidikan:"'.$jenjangPendidikan.'"
           ,asalSekolah:"'.$asalSekolah.'",alamatSekolah:"'.$alamatSekolah.'",namaOrangTua:"'.$namaOrangTua.'",alamatOrangTua:"'.$alamatOrangTua.'"
           ,pekerjaanOrangTua:"'.$pekerjaanOrangTua.'",kategori:"'.$kategori.'",persentaseBantuan:'.$persentaseBantuan.'
-          ,prioritas:"'.$prioritas.'",imagePath:"'.$imagePath.'",isApproved:"'.$isApproved.'"}) return n';
+          ,prioritas:"'.$prioritas.'",imagePath:"'.$imagePath.'",isApproved:"'.$isApproved.'",tahunLahir:"'.$tahunLahir.'"}) return n';
           $query = new Query($client, $cypher);
           $nodes = $query->getResultSet();
 
@@ -180,6 +181,7 @@ class MustahiqController extends Controller{
     $prioritas = $request->input('prioritas');
     $imagePath = $request->input('imagePath');
     $isApproved = $request->input('isApproved');
+    $tahunLahir = $request->input('tahunLahir');
     $statusRequest = 'failed';
     if(count($id) > 0){
       $node = $client->getNode($id);
@@ -202,6 +204,7 @@ class MustahiqController extends Controller{
       ->setProperty('imagePath', $imagePath)
       ->setProperty('nominal', $nominal)
       ->setProperty('isApproved', $isApproved)
+      ->setProperty('tahunLahir', $tahunLahir)
       ->save();
       $statusRequest = 'success';
     }
