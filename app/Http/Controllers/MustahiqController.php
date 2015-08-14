@@ -113,9 +113,9 @@ class MustahiqController extends Controller{
         ,alamat:"'.$alamat.'",latlong:"'.$latlong.'",status:"'.$status.'",jenjangPendidikan:"'.$jenjangPendidikan.'"
         ,asalSekolah:"'.$asalSekolah.'",alamatSekolah:"'.$alamatSekolah.'",namaOrangTua:"'.$namaOrangTua.'",alamatOrangTua:"'.$alamatOrangTua.'"
         ,pekerjaanOrangTua:"'.$pekerjaanOrangTua.'",kategori:"'.$kategori.'",persentaseBantuan:'.$persentaseBantuan.'
-        ,prioritas:"'.$prioritas.'",imagePath:"'.$imagePath.'"}) return n';
+        ,prioritas:"'.$prioritas.'",imagePath:"'.$imagePath.'",isApproved:"'.$isApproved.'",tahunLahir:'.$tahunLahir.'}) return n';
 
-        echo $cypher;
+        print_r($cypher);
           // $query = new Query($client, $cypher);
       //     $nodes = $query->getResultSet();
       //
