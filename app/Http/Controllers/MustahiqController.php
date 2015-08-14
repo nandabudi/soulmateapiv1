@@ -97,17 +97,17 @@ class MustahiqController extends Controller{
       $statusRequest = 'failed';
 
       //image upload handler
-      // $image = $request->input('imagePath');
-      // $filename  = $tahunLahir.'-'. time() . '.jpg' ;
-      // $imageSave = base_path().'/storage/pics/';
-      // $imagePath = $this->_uriImage.$filename;
-      // $binary=base64_decode($image);
-      // header('Content-Type: bitmap; charset=utf-8');
-      // $file = fopen($imageSave.$filename, 'wb');
-      // fwrite($file, $binary);
-      // fclose($file);
+      $image = $request->input('imagePath');
+      $filename  = $tahunLahir.'-'. time() . '.jpg' ;
+      $imageSave = base_path().'/storage/pics/';
+      $imagePath = $this->_uriImage.$filename;
+      $binary=base64_decode($image);
+      header('Content-Type: bitmap; charset=utf-8');
+      $file = fopen($imageSave.$filename, 'wb');
+      fwrite($file, $binary);
+      fclose($file);
       //
-      // if(count($nama) > 0 && count($latlong) > 0 ){
+      if(count($nama) > 0 && count($latlong) > 0 ){
       //     $cypher = 'CREATE (n:'.$this->_label.' {nama:"'.$nama.'",desc:"'.$desc.'"
       //     ,tempatLahir:"'.$tempatLahir.'",tanggalLahir:"'.$tanggalLahir.'",nominal:'.$nominal.'
       //     ,alamat:"'.$alamat.'",latlong:"'.$latlong.'",status:"'.$status.'",jenjangPendidikan:"'.$jenjangPendidikan.'"
@@ -128,9 +128,9 @@ class MustahiqController extends Controller{
       //     $donatur->relateTo($mustahiq, 'RECOMMENDED')
       //     ->setProperty('tanggal', $datenow)
       //     ->save();
-      //     $statusRequest = 'success';
-      // }
-      // return response()->json(array('status' => $statusRequest));
+          $statusRequest = 'success';
+      }
+      return response()->json(array('status' => $statusRequest));
   }
 
   public function deleteMustahiq($id){
