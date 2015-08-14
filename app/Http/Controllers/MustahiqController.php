@@ -108,13 +108,13 @@ class MustahiqController extends Controller{
       // fclose($file);
       //
       if(count($nama) > 0 && count($latlong) > 0 ){
-          $cypher = 'CREATE (n:'.$this->_label.' {nama:"'.$nama.'",desc:"'.$desc.'"
-          ,tempatLahir:"'.$tempatLahir.'",tanggalLahir:"'.$tanggalLahir.'",nominal:'.$nominal.'
-          ,alamat:"'.$alamat.'",latlong:"'.$latlong.'",status:"'.$status.'",jenjangPendidikan:"'.$jenjangPendidikan.'"
-          ,asalSekolah:"'.$asalSekolah.'",alamatSekolah:"'.$alamatSekolah.'",namaOrangTua:"'.$namaOrangTua.'",alamatOrangTua:"'.$alamatOrangTua.'"
-          ,pekerjaanOrangTua:"'.$pekerjaanOrangTua.'",kategori:"'.$kategori.'",persentaseBantuan:'.$persentaseBantuan.'
-          ,prioritas:"'.$prioritas.'",imagePath:"'.$imagePath.'",isApproved:"'.$isApproved.'"}) return n';
-          echo $cypher;
+          // $cypher = 'CREATE (n:'.$this->_label.' {nama:"'.$nama.'",desc:"'.$desc.'"
+          // ,tempatLahir:"'.$tempatLahir.'",tanggalLahir:"'.$tanggalLahir.'",nominal:'.$nominal.'
+          // ,alamat:"'.$alamat.'",latlong:"'.$latlong.'",status:"'.$status.'",jenjangPendidikan:"'.$jenjangPendidikan.'"
+          // ,asalSekolah:"'.$asalSekolah.'",alamatSekolah:"'.$alamatSekolah.'",namaOrangTua:"'.$namaOrangTua.'",alamatOrangTua:"'.$alamatOrangTua.'"
+          // ,pekerjaanOrangTua:"'.$pekerjaanOrangTua.'",kategori:"'.$kategori.'",persentaseBantuan:'.$persentaseBantuan.'
+          // ,prioritas:"'.$prioritas.'",imagePath:"'.$imagePath.'",isApproved:"'.$isApproved.'"}) return n';
+          echo 'aaa';
           // $query = new Query($client, $cypher);
       //     $nodes = $query->getResultSet();
       //
