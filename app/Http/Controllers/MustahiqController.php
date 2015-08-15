@@ -99,7 +99,7 @@ class MustahiqController extends Controller{
 
     //image upload handler
     $image = $request->input('imagePath');
-    $filename  = $tahunLahir.'-'. time() . '.jpg' ;
+    $filename  = rand().'-'. time() . '.jpg' ;
     $imageSave = base_path().'/storage/pics/';
     $imagePath = $this->_uriImage.$filename;
     $binary=base64_decode($image);
