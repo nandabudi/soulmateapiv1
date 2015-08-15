@@ -92,6 +92,7 @@ class MustahiqController extends Controller{
     $donaturId = $request->input('donaturId');
     $tahunLahir = $request->input('tahunLahir');
     $persentaseBantuan = 0;
+    $jumlahPenolong = 0;
     $prioritas = 'low';
     $isApproved = 'NO';
     $statusRequest = 'failed';
@@ -113,7 +114,7 @@ class MustahiqController extends Controller{
         ,alamat:"'.$alamat.'",latlong:"'.$latlong.'",status:"'.$status.'",jenjangPendidikan:"'.$jenjangPendidikan.'"
         ,asalSekolah:"'.$asalSekolah.'",alamatSekolah:"'.$alamatSekolah.'",namaOrangTua:"'.$namaOrangTua.'",alamatOrangTua:"'.$alamatOrangTua.'"
         ,pekerjaanOrangTua:"'.$pekerjaanOrangTua.'",kategori:"'.$kategori.'",persentaseBantuan:'.$persentaseBantuan.'
-        ,prioritas:"'.$prioritas.'",imagePath:"'.$imagePath.'",isApproved:"'.$isApproved.'",tahunLahir:'.$tahunLahir.'}) return n';
+        ,prioritas:"'.$prioritas.'",imagePath:"'.$imagePath.'",isApproved:"'.$isApproved.'",tahunLahir:'.$tahunLahir.',jumlahPenolong:'.$jumlahPenolong.'}) return n';
         $query = new Query($client, $cypher);
         $nodes = $query->getResultSet();
 
