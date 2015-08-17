@@ -32,6 +32,7 @@ $app->group(['prefix' => 'api/v1','namespace' => 'App\Http\Controllers'], functi
   $app->delete('donatur/{id}','DonaturController@deleteDonatur');
   $app->delete('donaturdeleteall','DonaturController@deleteAllDonatur');
 
+
   // mustahiq routes
   $app->get('mustahiq','MustahiqController@index');
   $app->get('mustahiq/{id}','MustahiqController@getMustahiq');
@@ -40,4 +41,7 @@ $app->group(['prefix' => 'api/v1','namespace' => 'App\Http\Controllers'], functi
   $app->put('mustahiq/{id}','MustahiqController@updateMustahiq');
   $app->delete('mustahiq/{id}','MustahiqController@deleteMustahiq');
   $app->delete('mustahiqdeleteall','MustahiqController@deleteAllMustahiq');
+
+  $app->post('donasi','DonaturController@createDonasi');
+  $app->get('donasi/{id}','DonaturController@getDonasi');
 });

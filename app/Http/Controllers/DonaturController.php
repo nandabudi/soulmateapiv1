@@ -109,6 +109,94 @@ class DonaturController extends Controller{
       return response()->json(array('status' => $status));
   }
 
+  public function createDonasi(Request $request){
+      $client = new Client($this->_host, $this->_port);
+      $client->getTransport()
+        ->setAuth($this->_userNeo4j, $this->_passNeo4j);
+      $donaturId = $request->input('donaturId');
+      $mustahiqId = $request->input('mustahiqId');
+      $jenisDonasi = $request->input('jenisDonasi');
+      $nama = $request->input('nama');
+      $nominal = $request->input('nominal');
+      $bank = $request->input('bank');
+      $norek = $request->input('norek');
+      $namaPengirim = $request->input('namaPengirim');
+      $lazis = $request->input('lazis');
+      $namaBarang = $request->input('namaBarang');
+      $alamat = $request->input('alamat');
+      $tglJemput = $request->input('tglJemput');
+      $waktu = $request->input('waktu');
+      $status = 'failed';
+      $datenow = date('Y-m-d H:i:s');
+      $donatur = $client->getNode($donaturId);
+      $mustahiq = $client->getNode($mustahiqId);
+
+      $imagePath = '';
+      //image upload handler
+      if($jenisDonasi == 1){
+        $image = $request->input('imagePath');
+        $filename  = rand().'-'. time() . '.jpg' ;
+        $imageSave = base_path().'/storage/pics/';
+        $imagePath = $this->_uriImage.$filename;
+        $binary=base64_decode($image);
+        header('Content-Type: bitmap; charset=utf-8');
+        $file = fopen($imageSave.$filename, 'wb');
+        fwrite($file, $binary);
+        fclose($file);
+      }
+      if(count($donatur) > 0 && count($mustahiq) >0){
+        $node = $client->getNode($mustahiqId);
+        $jumlahPenolong = $node->getProperty('jumlahPenolong');
+        $persentaseBantuan = $node->getProperty('persentaseBantuan');
+        $nominalBantuan = $node->getProperty('nominal');
+        $jumlahPenolong++;
+        $persentase = ($nominal/$nominalBantuan) * 100;
+        $persentaseBantuan = $persentaseBantuan + $persentase;
+        $node->setProperty('jumlahPenolong', $jumlahPenolong)
+        ->setProperty('persentaseBantuan', $persentaseBantuan)
+        ->save();
+        $donatur->relateTo($mustahiq, 'DONASI')
+        ->setProperty('tanggal', $datenow)
+        ->setProperty('nama', $nama)
+        ->setProperty('donaturId', $donaturId)
+        ->setProperty('nominal', $nominal)
+        ->setProperty('bank', $bank)
+        ->setProperty('norek', $norek)
+        ->setProperty('namaPengirim', $namaPengirim)
+        ->setProperty('lazis', $lazis)
+        ->setProperty('namaBarang', $namaBarang)
+        ->setProperty('alamat', $alamat)
+        ->setProperty('tglJemput', $tglJemput)
+        ->setProperty('waktu', $waktu)
+        ->setProperty('imagePath', $imagePath)
+        ->save();
+        $status = 'success';
+      }
+      return response()->json(array('status' => $status));
+  }
+
+
+  public function getDonasi($id){
+    $client = new Client($this->_host, $this->_port);
+    $client->getTransport()
+      ->setAuth($this->_userNeo4j, $this->_passNeo4j);
+    $cypher = 'MATCH (DONATUR)-[r:DONASI]->(MUSTAHIQ) where id(MUSTAHIQ)='.$id.' RETURN r LIMIT 100';
+    $query = new Query($client, $cypher);
+    $nodes = $query->getResultSet();
+    $status = 'failed';
+    $properties = array();
+    $result = array();
+    if(count($nodes) > 0){
+      $status = 'success';
+      foreach ($nodes as $node) {
+        $properties['id'] = $node['r']->getId();
+        $properties['properties'] = $node['r']->getProperties();
+        array_push($result,$properties);
+      }
+    }
+    return response()->json(array('status' => $status,'data' => $result));
+  }
+
   public function deleteDonatur($id){
     $client = new Client($this->_host, $this->_port);
     $client->getTransport()
