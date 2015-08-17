@@ -57,3 +57,17 @@ delete http://soulmateapi.cloudapp.net/api/v1/mustahiq/45
 edit data
 put ('uri/mustahiq/{id}');
 put http://soulmateapi.cloudapp.net/api/v1/mustahiq/49?nama=isha&desc=isha anak aceh&tempatLahir=aceh&tanggalLahir=07-07-1993&nominal=10000&jarak=1000&alamat=aceh&latlong=-6.090,190.00&status=gabut&jenjangPendidikan=sd&asalSekolah=sd islam dakol&alamatSekolah=aceh&namaOrangTua=ishamudin&alamatOrangTua=aceh&pekerjaanOrangTua=nelayan&tipeBantuan=uang&kategori=pendidikan&imagePath=
+
+
+
+Donasi
+
+tambah donasi
+post('uri/donasi');
+post http://soulmateapi.cloudapp.net/api/v1/donasi
+paramater : donaturId,mustahiqId,jenisDonasi,nama,nominal,bank
+            norek,namaPengirim,lazis,namaBarang,alamat,tglJemput,waktu,imagePath
+
+ambil donasi by id
+get('uri/donasi/{id}');
+get http://soulmateapi.cloudapp.net/api/v1/donasi/45
