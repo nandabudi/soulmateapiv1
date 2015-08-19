@@ -46,7 +46,7 @@ class DonaturController extends Controller{
       ->setAuth($this->_userNeo4j, $this->_passNeo4j);
     $donaturId =  $request->input('donaturId');
     $status = 'failed';
-    if(cpunt($donaturId) > 0){
+    if(count($donaturId) > 0){
       $node = $client->getNode($donaturId);
       if(count($node) > 0){
         $node->setProperty('gcmId', '')
