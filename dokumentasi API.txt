@@ -5,6 +5,10 @@ post('uri/login');
 post http://soulmateapi.cloudapp.net/api/v1/login
 parameter : username,password
 
+logout
+post('uri/login');
+post http://soulmateapi.cloudapp.net/api/v1/logout
+parameter : donaturId
 
 ambil semua data
 get('uri/donatur');
@@ -17,7 +21,7 @@ get http://soulmateapi.cloudapp.net/api/v1/donatur/45
 tambah data
 post('uri/donatur');
 post http://soulmateapi.cloudapp.net/api/v1/donatur
-paramater : username,password,email,nama,notelp,imagePath
+paramater : username,password,email,nama,notelp,imagePath,gcmId
 
 hapus data
 delete ('uri/donatur/{id}');
