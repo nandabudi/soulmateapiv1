@@ -42,12 +42,14 @@ class DonaturController extends Controller{
 
   public function logoutDonatur(Request $request){
     $donaturId =  $request->input('donaturId');
-    $node = $client->getNode($donaturId);
     $status = 'failed';
-    if(count($node) > 0){
-      $node->setProperty('gcmId', '')
-      ->save();
-      $status = 'success';
+    if(cpunt($donaturId) > 0){
+      $node = $client->getNode($donaturId);
+      if(count($node) > 0){
+        $node->setProperty('gcmId', '')
+        ->save();
+        $status = 'success';
+      }
     }
     return response()->json(array('status' => $status));
   }
