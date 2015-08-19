@@ -41,6 +41,9 @@ class DonaturController extends Controller{
   }
 
   public function logoutDonatur(Request $request){
+    $client = new Client($this->_host, $this->_port);
+    $client->getTransport()
+      ->setAuth($this->_userNeo4j, $this->_passNeo4j);
     $donaturId =  $request->input('donaturId');
     $status = 'failed';
     if(cpunt($donaturId) > 0){
