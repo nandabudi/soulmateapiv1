@@ -40,6 +40,18 @@ class DonaturController extends Controller{
     return response()->json(array('status' => $status,'data' => $properties));
   }
 
+  public function logoutDonatur(Request $request){
+    $donaturId =  $request->input('donaturId');
+    $node = $client->getNode($donaturId);
+    $status = 'failed';
+    if(count($node) > 0){
+      $node->setProperty('gcmId', '')
+      ->save();
+      $status = 'success';
+    }
+    return response()->json(array('status' => $status));
+  }
+
   public function index(){
     $client = new Client($this->_host, $this->_port);
     $client->getTransport()
@@ -81,6 +93,7 @@ class DonaturController extends Controller{
       $email = $request->input('email');
       $nama = $request->input('nama');
       $notelp = $request->input('notelp');
+      $gcmId = $request->input('gcmId');
       $status = 'failed';
 
       //image upload handler
@@ -100,7 +113,7 @@ class DonaturController extends Controller{
         if(count($resultCek) > 0){
           $status = 'failed, data already created';
         }else{
-          $cypher = 'CREATE (n:'.$this->_label.' {username:"'.$username.'",password:"'.$password.'",email:"'.$email.'",nama:"'.$nama.'",notelp:"'.$notelp.'",imagePath:"'.$imagePath.'"}) return n';
+          $cypher = 'CREATE (n:'.$this->_label.' {username:"'.$username.'",password:"'.$password.'",email:"'.$email.'",nama:"'.$nama.'",notelp:"'.$notelp.'",imagePath:"'.$imagePath.'",gcmId:"'.$gcmId.'"}) return n';
           $query = new Query($client, $cypher);
           $query->getResultSet();
           $status = 'success';
@@ -230,6 +243,7 @@ class DonaturController extends Controller{
     $nama = $request->input('nama');
     $notelp = $request->input('notelp');
     $imagePath = $request->input('imagePath');
+    $gcmId = $request->input('gcmId');
     $status = 'failed';
     $cypherCek = 'MATCH (n:'.$this->_label.') where n.username="'.$username.'" RETURN n';
     $queryCek = new Query($client, $cypherCek);
@@ -243,6 +257,7 @@ class DonaturController extends Controller{
       ->setProperty('nama', $nama)
       ->setProperty('notelp', $notelp)
       ->setProperty('imagePath', $imagePath)
+      ->setProperty('gcmId', $gcmId)
       ->save();
       $status = 'success';
     }

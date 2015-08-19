@@ -25,6 +25,7 @@ $app->group(['prefix' => 'api/v1','namespace' => 'App\Http\Controllers'], functi
 {
   // donatur routes
   $app->post('login','DonaturController@loginDonatur');
+  $app->post('logout','DonaturController@logoutDonatur');
   $app->get('donatur','DonaturController@index');
   $app->get('donatur/{id}','DonaturController@getDonatur');
   $app->post('donatur','DonaturController@createDonatur');
