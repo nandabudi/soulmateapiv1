@@ -37,7 +37,7 @@ $app->group(['prefix' => 'api/v1','namespace' => 'App\Http\Controllers'], functi
   $app->put('mustahiq/{id}','MustahiqController@updateMustahiq');
   $app->delete('mustahiq/{id}','MustahiqController@deleteMustahiq');
   $app->delete('mustahiqdeleteall','MustahiqController@deleteAllMustahiq');
-  $app->post('mustahiq/validasi/{id}','MustahiqController@validasiMustahiq');
+  $app->get('mustahiq/validasi/{id}','MustahiqController@validasiMustahiq');
 
   $app->post('donasi','DonaturController@createDonasi');
   $app->get('donasi/{id}','DonaturController@getDonasi');
