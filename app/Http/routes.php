@@ -15,6 +15,11 @@ $app->get('/', function () use ($app) {
     return $app->welcome();
 });
 
+$app->get('api/v1/images/{filename}', function ($filename)
+{
+  $path = storage_path() . '/pics/' . $filename;
+  return response()->download($path);
+});
 
 $app->group(['prefix' => 'api/v1','namespace' => 'App\Http\Controllers'], function($app)
 {
