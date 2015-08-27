@@ -49,6 +49,21 @@ class MustahiqController extends Controller{
     return response()->json(array('status' => $status,'data' => $properties));
   }
 
+  public function validasiMustahiq($id){
+    $client = new Client($this->_host, $this->_port);
+    $client->getTransport()
+      ->setAuth($this->_userNeo4j, $this->_passNeo4j);
+    $nodes = $client->getNode($id);
+    $status = 'failed';
+    $properties = array();
+    if(count($nodes) > 0){
+      $status = 'success';
+      $nodes->setProperty('isApproved', 'YES')
+      ->save();
+    }
+    return response()->json(array('status' => $status));
+  }
+
   public function getMustahiqByKategori($id){
     $client = new Client($this->_host, $this->_port);
     $client->getTransport()

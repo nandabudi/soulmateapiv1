@@ -15,11 +15,6 @@ $app->get('/', function () use ($app) {
     return $app->welcome();
 });
 
-$app->get('api/v1/images/{filename}', function ($filename)
-{
-  $path = storage_path() . '/pics/' . $filename;
-  return response()->download($path);
-});
 
 $app->group(['prefix' => 'api/v1','namespace' => 'App\Http\Controllers'], function($app)
 {
@@ -42,6 +37,7 @@ $app->group(['prefix' => 'api/v1','namespace' => 'App\Http\Controllers'], functi
   $app->put('mustahiq/{id}','MustahiqController@updateMustahiq');
   $app->delete('mustahiq/{id}','MustahiqController@deleteMustahiq');
   $app->delete('mustahiqdeleteall','MustahiqController@deleteAllMustahiq');
+  $app->post('mustahiq/validasi/{id}','MustahiqController@validasiMustahiq');
 
   $app->post('donasi','DonaturController@createDonasi');
   $app->get('donasi/{id}','DonaturController@getDonasi');
