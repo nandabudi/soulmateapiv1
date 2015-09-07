@@ -75,3 +75,13 @@ paramater : donaturId,mustahiqId,jenisDonasi,nama,nominal,bank
 ambil donasi by id
 get('uri/donasi/{id}');
 get http://soulmateapi.cloudapp.net/api/v1/donasi/45
+
+Validasi
+
+validasi mustahiq
+post('validasi/mustahiq/{id mustahiq}');
+post http://soulmateapi.cloudapp.net/api/v1/validasi/mustahiq/43
+
+validasi donasi
+post('validasi/donasi/{id donasi}');
+post http://soulmateapi.cloudapp.net/api/v1/validasi/donasi/43
