@@ -110,7 +110,7 @@ class MustahiqController extends Controller{
     $jumlahPenolong = 0;
     $prioritas = 0;
     $isApproved = 'NO';
-    $statusRequest = 'asasasa';
+    $statusRequest = 'failed';
 
     if(count($nama) > 0 && count($latlong) > 0 && count($donaturId) > 0){
         $nodeDonatur = $client->getNode($donaturId);

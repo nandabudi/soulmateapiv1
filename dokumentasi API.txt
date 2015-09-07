@@ -3,10 +3,10 @@ Donatur
 login
 post('uri/login');
 post http://soulmateapi.cloudapp.net/api/v1/login
-parameter : username,password
+parameter : username,password,gcmId
 
 logout
-post('uri/login');
+post('uri/logout');
 post http://soulmateapi.cloudapp.net/api/v1/logout
 parameter : donaturId
 
