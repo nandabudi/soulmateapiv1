@@ -19,7 +19,7 @@ $app = new Laravel\Lumen\Application(
     realpath(__DIR__.'/../')
 );
 
-// $app->withFacades();
+$app->withFacades();
 
 // $app->withEloquent();
 
@@ -33,6 +33,7 @@ $app = new Laravel\Lumen\Application(
 | your own bindings here if you like or you can make another file.
 |
 */
+
 
 $app->singleton(
     Illuminate\Contracts\Debug\ExceptionHandler::class,
@@ -77,9 +78,10 @@ $app->singleton(
 | totally optional, so you are not required to uncomment this line.
 |
 */
+class_alias('Davibennun\LaravelPushNotification\Facades\PushNotification', 'PushNotification');
 
 // $app->register(App\Providers\AppServiceProvider::class);
-// $app->register(App\Providers\EventServiceProvider::class);
+$app->register('Davibennun\LaravelPushNotification\LaravelPushNotificationServiceProvider');
 
 /*
 |--------------------------------------------------------------------------

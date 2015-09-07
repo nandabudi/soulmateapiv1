@@ -10,18 +10,11 @@ use Everyman\Neo4j\Client;
 
 class MustahiqController extends Controller{
 
-  public $_host = 'localhost';
-  public $_port = 7474;
-  public $_userNeo4j = 'neo4j';
-  public $_passNeo4j = 'soulmate';
-  public $_label = 'Mustahiq';
-  public $_uriImage = 'http://soulmateapi.cloudapp.net/api/v1/images/';
-
-  public function index(){
-    $client = new Client($this->_host, $this->_port);
+  public function getAllMustahiq(){
+    $client = new Client(HelperController::getHost(), HelperController::getPort());
     $client->getTransport()
-      ->setAuth($this->_userNeo4j, $this->_passNeo4j);
-    $label = $client->makeLabel($this->_label);
+      ->setAuth(HelperController::getUserNeo4j(), HelperController::getPassNeo4j());
+    $label = $client->makeLabel(HelperController::getLabelMustahiq());
     $nodes = $label->getNodes();
     $status = 'success';
     $result = array();
@@ -35,60 +28,67 @@ class MustahiqController extends Controller{
   }
 
   public function getMustahiq($id){
-    $client = new Client($this->_host, $this->_port);
+    $client = new Client(HelperController::getHost(), HelperController::getPort());
     $client->getTransport()
-      ->setAuth($this->_userNeo4j, $this->_passNeo4j);
-    $nodes = $client->getNode($id);
+      ->setAuth(HelperController::getUserNeo4j(), HelperController::getPassNeo4j());
     $status = 'failed';
     $properties = array();
-    if(count($nodes) > 0){
-      $status = 'success';
-      $properties['id'] = $nodes->getId();
-      $properties['properties'] = $nodes->getProperties();
+    if(count($id) > 0){
+      $nodes = $client->getNode($id);
+      if(count($nodes) > 0){
+        if(count($nodes->getProperties()) > 0){
+          $labels = $nodes->getLabels();
+          $label = $labels[0]->getName();
+          if($label == HelperController::getLabelMustahiq()){
+            $status = 'success';
+            $properties['id'] = $nodes->getId();
+            $properties['properties'] = $nodes->getProperties();
+          }else{
+            $status = 'failed, the label is not mustahiq check your parameter';
+          }
+        }else{
+          $status = 'failed, the label is not mustahiq check your parameter';
+        }
+      }else{
+        $status = 'failed, return value is empty check your mustahiq id';
+      }
+    }else{
+      $status = 'failed, mustahiq id is empty please check your parameter';
     }
     return response()->json(array('status' => $status,'data' => $properties));
   }
 
-  public function validasiMustahiq($id){
-    $client = new Client($this->_host, $this->_port);
-    $client->getTransport()
-      ->setAuth($this->_userNeo4j, $this->_passNeo4j);
-    $nodes = $client->getNode($id);
-    $status = 'failed';
-    $properties = array();
-    if(count($nodes) > 0){
-      $status = 'success';
-      $nodes->setProperty('isApproved', 'YES')
-      ->save();
-    }
-    return response()->json(array('status' => $status));
-  }
-
   public function getMustahiqByKategori($id){
-    $client = new Client($this->_host, $this->_port);
+    $client = new Client(HelperController::getHost(), HelperController::getPort());
     $client->getTransport()
-      ->setAuth($this->_userNeo4j, $this->_passNeo4j);
-    $cypher = 'MATCH (n:'.$this->_label.') where n.kategori="'.$id.'" RETURN n';
-    $query = new Query($client, $cypher);
-    $nodes = $query->getResultSet();
+      ->setAuth(HelperController::getUserNeo4j(), HelperController::getPassNeo4j());
     $status = 'failed';
     $properties = array();
     $result = array();
-    if(count($nodes) > 0){
-      $status = 'success';
-      foreach($nodes as $node){
-        $properties['id'] = $node['n']->getId();
-        $properties['properties'] = $node['n']->getProperties();
-        array_push($result,$properties);
+    if(count($id) > 0){
+      $cypher = 'MATCH (n:'.HelperController::getLabelMustahiq().') where n.kategori="'.$id.'" RETURN n';
+      $query = new Query($client, $cypher);
+      $nodes = $query->getResultSet();
+      if(count($nodes) > 0){
+        $status = 'success';
+        foreach($nodes as $node){
+          $properties['id'] = $node['n']->getId();
+          $properties['properties'] = $node['n']->getProperties();
+          array_push($result,$properties);
+        }
+      }else{
+        $status = 'failed, return value is empty check your mustahiq category';
       }
+    }else{
+      $status = 'failed, mustahiq category is empty please check your parameter';
     }
     return response()->json(array('status' => $status,'data' => $result));
   }
 
   public function createMustahiq(Request $request){
-    $client = new Client($this->_host, $this->_port);
+    $client = new Client(HelperController::getHost(), HelperController::getPort());
     $client->getTransport()
-      ->setAuth($this->_userNeo4j, $this->_passNeo4j);
+      ->setAuth(HelperController::getUserNeo4j(), HelperController::getPassNeo4j());
     $nama = $request->input('nama');
     $desc = $request->input('desc');
     $tempatLahir = $request->input('tempatLahir');
@@ -110,64 +110,95 @@ class MustahiqController extends Controller{
     $jumlahPenolong = 0;
     $prioritas = 0;
     $isApproved = 'NO';
-    $statusRequest = 'failed';
+    $statusRequest = 'asasasa';
 
-    //image upload handler
-    $image = $request->input('imagePath');
-    $filename  = rand().'-'. time() . '.jpg' ;
-    $imageSave = base_path().'/storage/pics/';
-    $imagePath = $this->_uriImage.$filename;
-    $binary=base64_decode($image);
-    header('Content-Type: bitmap; charset=utf-8');
-    $file = fopen($imageSave.$filename, 'wb');
-    fwrite($file, $binary);
-    fclose($file);
+    if(count($nama) > 0 && count($latlong) > 0 && count($donaturId) > 0){
+        $nodeDonatur = $client->getNode($donaturId);
+        if(count($nodeDonatur) > 0){
+          if(count($nodeDonatur->getProperties()) > 0){
+            $labels = $nodeDonatur->getLabels();
+            $label = $labels[0]->getName();
+            $gcmId = $nodeDonatur->getProperty('gcmId');
+            if($label == HelperController::getLabelDonatur()){
+              //image upload handler
+              $image = $request->input('imagePath');
+              $imagePath = HelperController::saveImageWithReturn($image,'mustahiq');
+              $cypher = 'CREATE (n:'.HelperController::getLabelMustahiq().' {nama:"'.$nama.'",desc:"'.$desc.'"
+              ,tempatLahir:"'.$tempatLahir.'",tanggalLahir:"'.$tanggalLahir.'",nominal:'.$nominal.'
+              ,alamat:"'.$alamat.'",latlong:"'.$latlong.'",status:"'.$status.'",jenjangPendidikan:"'.$jenjangPendidikan.'"
+              ,asalSekolah:"'.$asalSekolah.'",alamatSekolah:"'.$alamatSekolah.'",namaOrangTua:"'.$namaOrangTua.'",alamatOrangTua:"'.$alamatOrangTua.'"
+              ,pekerjaanOrangTua:"'.$pekerjaanOrangTua.'",kategori:"'.$kategori.'",persentaseBantuan:'.$persentaseBantuan.'
+              ,prioritas:'.$prioritas.',imagePath:"'.$imagePath.'",isApproved:"'.$isApproved.'"
+              ,tahunLahir:'.$tahunLahir.',jumlahPenolong:'.$jumlahPenolong.',donaturId:'.$donaturId.'}) return n';
+              $query = new Query($client, $cypher);
+              $nodes = $query->getResultSet();
 
-    if(count($nama) > 0 && count($latlong) > 0 ){
-        $cypher = 'CREATE (n:'.$this->_label.' {nama:"'.$nama.'",desc:"'.$desc.'"
-        ,tempatLahir:"'.$tempatLahir.'",tanggalLahir:"'.$tanggalLahir.'",nominal:'.$nominal.'
-        ,alamat:"'.$alamat.'",latlong:"'.$latlong.'",status:"'.$status.'",jenjangPendidikan:"'.$jenjangPendidikan.'"
-        ,asalSekolah:"'.$asalSekolah.'",alamatSekolah:"'.$alamatSekolah.'",namaOrangTua:"'.$namaOrangTua.'",alamatOrangTua:"'.$alamatOrangTua.'"
-        ,pekerjaanOrangTua:"'.$pekerjaanOrangTua.'",kategori:"'.$kategori.'",persentaseBantuan:'.$persentaseBantuan.'
-        ,prioritas:'.$prioritas.',imagePath:"'.$imagePath.'",isApproved:"'.$isApproved.'",tahunLahir:'.$tahunLahir.',jumlahPenolong:'.$jumlahPenolong.'}) return n';
-        $query = new Query($client, $cypher);
-        $nodes = $query->getResultSet();
+              // add mustahiq relationship
+              $datenow = date('Y-m-d H:i:s');
+              $mustahiqId = 0;
+              foreach($nodes as $node){
+                 $mustahiqId = $node['n']->getId();
+              }
 
-        // add mustahiq relationship
-        $datenow = date('Y-m-d H:i:s');
-        $mustahiqId = 0;
-        foreach($nodes as $node){
-           $mustahiqId = $node['n']->getId();
+              $donatur = $client->getNode($donaturId);
+              $mustahiq = $client->getNode($mustahiqId);
+              $donatur->relateTo($mustahiq, 'RECOMMENDED')
+              ->setProperty('tanggal', $datenow)
+              ->save();
+              $statusRequest = 'success';
+              GCMController::gcmPushNotifikasi('rekomendasi',$gcmId);
+
+            }else{
+              $statusRequest = 'failed, the label is not donatur check your parameter';
+            }
+          }else{
+            $statusRequest = 'failed, the label is not donatur check your parameter';
+          }
+        }else{
+          $statusRequest = 'failed, return value is empty check your donatur id';
         }
-        $donatur = $client->getNode($donaturId);
-        $mustahiq = $client->getNode($mustahiqId);
-        $donatur->relateTo($mustahiq, 'RECOMMENDED')
-        ->setProperty('tanggal', $datenow)
-        ->save();
-        $statusRequest = 'success';
+    }else{
+      $statusRequest = 'failed, please check your parameter';
     }
     return response()->json(array('status' => $statusRequest));
   }
 
   public function deleteMustahiq($id){
-    $client = new Client($this->_host, $this->_port);
+    $client = new Client(HelperController::getHost(), HelperController::getPort());
     $client->getTransport()
-      ->setAuth($this->_userNeo4j, $this->_passNeo4j);
-    $node = $client->getNode($id);
+      ->setAuth(HelperController::getUserNeo4j(), HelperController::getPassNeo4j());
     $status = 'failed';
-    if(count($node) > 0){
-      $cypher = 'START n=node('.$id.') MATCH n-[r]-() DELETE r, n';
-      $query = new Query($client, $cypher);
-      $query->getResultSet();
-      $status = 'success';
+    if(count($id) > 0){
+      $node = $client->getNode($id);
+      if(count($node) > 0){
+        if(count($node->getProperties()) > 0){
+          $labels = $node->getLabels();
+          $label = $labels[0]->getName();
+          if($label == HelperController::getLabelMustahiq()){
+            $cypher = 'START n=node('.$id.') MATCH n-[r]-() DELETE r, n';
+            $query = new Query($client, $cypher);
+            $query->getResultSet();
+            $status = 'success';
+          }else{
+            $status = 'failed, the label is not mustahiq check your parameter';
+          }
+        }else{
+          $status = 'failed, the label is not mustahiq check your parameter';
+        }
+      }else{
+        $status = 'failed, return value is empty check your mustahiq id ';
+      }
+    }else{
+      $status = 'failed, mustahiq id is empty please check your parameter';
     }
+
     return response()->json(array('status' => $status));
   }
 
   public function deleteAllMustahiq(){
-    $client = new Client($this->_host, $this->_port);
+    $client = new Client(HelperController::getHost(), HelperController::getPort());
     $client->getTransport()
-      ->setAuth($this->_userNeo4j, $this->_passNeo4j);
+      ->setAuth(HelperController::getUserNeo4j(), HelperController::getPassNeo4j());
     $cypher = 'MATCH (n:Mustahiq) OPTIONAL MATCH (n)-[r]-() DELETE n,r';
     $query = new Query($client, $cypher);
     $query->getResultSet();
@@ -176,9 +207,9 @@ class MustahiqController extends Controller{
   }
 
   public function updateMustahiq(Request $request,$id){
-    $client = new Client($this->_host, $this->_port);
+    $client = new Client(HelperController::getHost(), HelperController::getPort());
     $client->getTransport()
-      ->setAuth($this->_userNeo4j, $this->_passNeo4j);
+      ->setAuth(HelperController::getUserNeo4j(), HelperController::getPassNeo4j());
     $nama = $request->input('nama');
     $desc = $request->input('desc');
     $tempatLahir = $request->input('tempatLahir');
