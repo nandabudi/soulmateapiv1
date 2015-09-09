@@ -17,6 +17,7 @@ class NotifikasiController extends Controller{
     $query = new Query($client, $cypher);
     $query->getResultSet();
   }
+  
   public function getAllNotifikasi(){
     $client = new Client(HelperController::getHost(), HelperController::getPort());
     $client->getTransport()

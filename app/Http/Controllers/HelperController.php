@@ -11,6 +11,7 @@ class HelperController extends Controller{
   public static $passNeo4j = 'soulmate';
   public static $labelDonatur = 'Donatur';
   public static $labelMustahiq = 'Mustahiq';
+  public static $labelNotifikasi = 'Notifikasi';
   public static $labelRekomendasi = 'RECOMMENDED_BY';
   public static $labelDonasi = 'DONASI';
   public static $uriImage = 'http://soulmateapi.cloudapp.net/api/v1/images/';
@@ -43,6 +44,10 @@ class HelperController extends Controller{
 
   public static function getLabelMustahiq(){
     return self::$labelMustahiq;
+  }
+  
+  public static function getLabelNotifikasi(){
+    return self::$labelNotifikasi;
   }
 
   public static function getUriImage(){
