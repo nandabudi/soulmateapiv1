@@ -40,29 +40,25 @@ class NotifikasiController extends Controller{
       ->setAuth(HelperController::getUserNeo4j(), HelperController::getPassNeo4j());
     $status = 'failed';
     $properties = array();
+    $result = array();
     if(count($id) > 0){
-      $nodes = $client->getNode($id);
+      $cypher = 'MATCH (n:Notifikasi) where n.donaturId="'.$id.'" RETURN n LIMIT 100';
+      $query = new Query($client, $cypher);
+      $nodes = $query->getResultSet();
       if(count($nodes) > 0){
-        if(count($nodes->getProperties()) > 0){
-          $labels = $nodes->getLabels();
-          $label = $labels[0]->getName();
-          if($label == HelperController::getLabelNotifikasi()){
-            $status = 'success';
-            $properties['id'] = $nodes->getId();
-            $properties['properties'] = $nodes->getProperties();
-          }else{
-            $status = 'failed, the label is not notifikasi check your parameter';
-          }
-        }else{
-          $status = 'failed, the label is not notifikasi check your parameter';
+        $status = 'success';
+        foreach ($nodes as $node) {
+          $properties['id'] = $node['r']->getId();
+          $properties['properties'] = $node['r']->getProperties();
+          array_push($result,$properties);
         }
       }else{
-        $status = 'failed, return value is empty check your notifikasi id';
+        $status = 'failed, return value is empty check your donatur id';
       }
     }else{
       $status = 'failed, notifikasi id is empty please check your parameter';
     }
-    return response()->json(array('status' => $status,'data' => $properties));
+    return response()->json(array('status' => $status,'data' => $result));
   }
 
 }
