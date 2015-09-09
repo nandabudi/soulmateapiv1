@@ -72,6 +72,10 @@ post http://soulmateapi.cloudapp.net/api/v1/donasi
 paramater : donaturId,mustahiqId,jenisDonasi,nama,nominal,bank
             norek,namaPengirim,lazis,namaBarang,alamat,tglJemput,waktu,imagePath
 
+ambil semua
+get('uri/donasi');
+get http://soulmateapi.cloudapp.net/api/v1/donasi
+
 ambil donasi by id
 get('uri/donasi/{id}');
 get http://soulmateapi.cloudapp.net/api/v1/donasi/45
@@ -85,3 +89,13 @@ post http://soulmateapi.cloudapp.net/api/v1/validasi/mustahiq/43
 validasi donasi
 post('validasi/donasi/{id donasi}');
 post http://soulmateapi.cloudapp.net/api/v1/validasi/donasi/43
+
+Notifikasi
+
+ambil semua notifikasi
+post('uri/notifikasi');
+post http://soulmateapi.cloudapp.net/api/v1/notifikasi
+
+ambil notifikasi by id
+get('uri/notifikasi/{id}');
+get http://soulmateapi.cloudapp.net/api/v1/notifikasi/45
