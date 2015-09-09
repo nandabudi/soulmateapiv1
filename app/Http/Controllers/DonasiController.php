@@ -59,6 +59,7 @@ class DonasiController extends Controller{
           ->setProperty('tanggal', $datenow)
           ->setProperty('nama', $nama)
           ->setProperty('donaturId', $donaturId)
+          ->setProperty('mustahiqId', $mustahiqId)
           ->setProperty('nominal', $nominal)
           ->setProperty('bank', $bank)
           ->setProperty('norek', $norek)
@@ -73,6 +74,10 @@ class DonasiController extends Controller{
           ->save();
           $status = 'success';
 
+          $datenow = date('Y-m-d H:i:s');
+          $imagePathMustahiq = $mustahiq->getProperty('imagePath');
+          $namaMustahiq = $mustahiq->getProperty('nama');
+          NotifikasiController::createNotifikasiNode($donaturId,$mustahiqId,$namaMustahiq,$datenow,$imagePathMustahiq,$nominal);
           //push notification
           $gcmId = $donatur->getProperty('gcmId');
           GCMController::gcmPushNotifikasi('donasi',$gcmId);

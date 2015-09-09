@@ -17,11 +17,16 @@ class ValidasiController extends Controller{
       $nodes = $client->getNode($id);
       $properties = array();
       if(count($nodes) > 0){
+        $donaturId = $nodes->getProperty('donaturId');
         $nodeDonatur = $client->getNode($nodes->getProperty('donaturId'));
         $gcmId = $nodeDonatur->getProperty('gcmId');
         $status = 'success';
         $nodes->setProperty('isApproved', 'YES')
         ->save();
+        $imagePathMustahiq = $nodes->getProperty('imagePath');
+        $namaMustahiq = $nodes->getProperty('nama');
+        $datenow = date('Y-m-d H:i:s');
+        NotifikasiController::createNotifikasiNode($donaturId,$id,$namaMustahiq,$datenow,$imagePathMustahiq,-1);
         GCMController::gcmPushNotifikasi('validasimustahiq',$gcmId);
       }else{
         $status = 'failed, return value is empty check your mustahiq id';
@@ -41,11 +46,20 @@ class ValidasiController extends Controller{
       $nodes = $client->getRelationship($id);
       $properties = array();
       if(count($nodes) > 0){
-        $nodeDonatur = $client->getNode($nodes->getProperty('donaturId'));
+        $donaturId = $nodes->getProperty('donaturId');
+        $nodeDonatur = $client->getNode($donaturId);
         $gcmId = $nodeDonatur->getProperty('gcmId');
         $status = 'success';
         $nodes->setProperty('isValidate', 1)
         ->save();
+
+        $mustahiqId = $nodes->getProperty('mustahiqId');
+        $nodeMustahiq = $client->getNode($mustahiqId);
+        $imagePathMustahiq = $nodeMustahiq->getProperty('imagePath');
+        $namaMustahiq = $nodeMustahiq->getProperty('nama');
+        $nominal = $nodeMustahiq->getProperty('nominal');
+        $datenow = date('Y-m-d H:i:s');
+        NotifikasiController::createNotifikasiNode($donaturId,$mustahiqId,$namaMustahiq,$datenow,$imagePathMustahiq,$nominal);
         GCMController::gcmPushNotifikasi('validasidonasi',$gcmId);
       }else{
         $status = 'failed, return value is empty check your donasi id';
