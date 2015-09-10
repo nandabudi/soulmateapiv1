@@ -8,13 +8,13 @@ class GCMController extends Controller{
 
   public static function getPesan($from){
     if($from == 'rekomendasi'){
-      return 'Terima kasih telah merekomendasikan mustahiq, data akan segera di validasi :)';
+      return 'Terima kasih, data mustahiq akan segera di validasi :)';
     }else if($from == 'validasimustahiq'){
-      return 'Terima kasih telah merekomendasikan mustahiq, data mustahiq berhasil di validasi :)';
+      return 'Terima kasih, data mustahiq berhasil di validasi :)';
     }else if ($from == 'donasi'){
-      return 'Terima kasih telah melakukan donasi, data akan segera di validasi :)';
+      return 'Terima kasih, data donasi akan segera di validasi :)';
     }else if ($from == 'validasidonasi'){
-      return 'Terima kasih telah melakukan donasi, data donasi berhasil di validasi :)';
+      return 'Terima kasih, data donasi berhasil di validasi :)';
     }else{
       return 'Salah kategori';
     }
