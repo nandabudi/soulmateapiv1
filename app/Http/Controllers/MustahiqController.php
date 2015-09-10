@@ -146,7 +146,7 @@ class MustahiqController extends Controller{
               ->setProperty('tanggal', $datenow)
               ->save();
               $statusRequest = 'success';
-              NotifikasiController::createNotifikasiNode($donaturId,$mustahiqId,$nama,$datenow,$imagePath,-1);
+              NotifikasiController::createNotifikasiNode($donaturId,$mustahiqId,$nama,$datenow,$imagePath,-1,'rekomendasi');
               GCMController::gcmPushNotifikasi('rekomendasi',$gcmId);
 
             }else{

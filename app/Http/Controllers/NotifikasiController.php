@@ -8,16 +8,16 @@ use Everyman\Neo4j\Client;
 
 class NotifikasiController extends Controller{
 
-  public static function createNotifikasiNode($donaturId,$mustahiqId,$nama,$tanggal,$imagePath,$nominal){
+  public static function createNotifikasiNode($donaturId,$mustahiqId,$nama,$tanggal,$imagePath,$nominal,$kategori){
     $client = new Client(HelperController::getHost(), HelperController::getPort());
     $client->getTransport()
       ->setAuth(HelperController::getUserNeo4j(), HelperController::getPassNeo4j());
-    $cypherQuery = 'CREATE (n:'.HelperController::getLabelNotifikasi().' {donaturId:"'.$donaturId.'",mustahiqId:"'.$mustahiqId.'",nama:"'.$nama.'",tanggal:"'.$tanggal.'",imagePath:"'.$imagePath.'",nominal:'.$nominal.'}) return n';
+    $cypherQuery = 'CREATE (n:'.HelperController::getLabelNotifikasi().' {donaturId:"'.$donaturId.'",mustahiqId:"'.$mustahiqId.'",nama:"'.$nama.'",tanggal:"'.$tanggal.'",imagePath:"'.$imagePath.'",nominal:'.$nominal.',kategori:"'.$kategori.'"}) return n';
     $cypher = $cypherQuery;
     $query = new Query($client, $cypher);
     $query->getResultSet();
   }
-  
+
   public function getAllNotifikasi(){
     $client = new Client(HelperController::getHost(), HelperController::getPort());
     $client->getTransport()

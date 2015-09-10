@@ -77,7 +77,7 @@ class DonasiController extends Controller{
           $datenow = date('Y-m-d H:i:s');
           $imagePathMustahiq = $mustahiq->getProperty('imagePath');
           $namaMustahiq = $mustahiq->getProperty('nama');
-          NotifikasiController::createNotifikasiNode($donaturId,$mustahiqId,$namaMustahiq,$datenow,$imagePathMustahiq,$nominal);
+          NotifikasiController::createNotifikasiNode($donaturId,$mustahiqId,$namaMustahiq,$datenow,$imagePathMustahiq,$nominal,'donasi');
           //push notification
           $gcmId = $donatur->getProperty('gcmId');
           GCMController::gcmPushNotifikasi('donasi',$gcmId);

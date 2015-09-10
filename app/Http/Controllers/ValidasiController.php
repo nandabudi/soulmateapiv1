@@ -26,7 +26,7 @@ class ValidasiController extends Controller{
         $imagePathMustahiq = $nodes->getProperty('imagePath');
         $namaMustahiq = $nodes->getProperty('nama');
         $datenow = date('Y-m-d H:i:s');
-        NotifikasiController::createNotifikasiNode($donaturId,$id,$namaMustahiq,$datenow,$imagePathMustahiq,-1);
+        NotifikasiController::createNotifikasiNode($donaturId,$id,$namaMustahiq,$datenow,$imagePathMustahiq,-1,'validasimustahiq');
         GCMController::gcmPushNotifikasi('validasimustahiq',$gcmId);
       }else{
         $status = 'failed, return value is empty check your mustahiq id';
@@ -59,7 +59,7 @@ class ValidasiController extends Controller{
         $namaMustahiq = $nodeMustahiq->getProperty('nama');
         $nominal = $nodeMustahiq->getProperty('nominal');
         $datenow = date('Y-m-d H:i:s');
-        NotifikasiController::createNotifikasiNode($donaturId,$mustahiqId,$namaMustahiq,$datenow,$imagePathMustahiq,$nominal);
+        NotifikasiController::createNotifikasiNode($donaturId,$mustahiqId,$namaMustahiq,$datenow,$imagePathMustahiq,$nominal,'validasidonasi');
         GCMController::gcmPushNotifikasi('validasidonasi',$gcmId);
       }else{
         $status = 'failed, return value is empty check your donasi id';
