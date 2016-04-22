@@ -38,6 +38,10 @@ ambil semua data
 get('uri/mustahiq');
 get http://soulmateapi.cloudapp.net/api/v1/mustahiq/
 
+ambil semua data berdasarkan approved
+get('mustahiq/approved/{YES|NO}');
+get http://soulmateapi.cloudapp.net/api/v1/mustahiq/approved/{id}
+
 ambil data by id
 get('uri/mustahiq/{id}');
 get http://soulmateapi.cloudapp.net/api/v1/mustahiq/45
@@ -86,9 +90,17 @@ validasi mustahiq
 post('validasi/mustahiq/{id mustahiq}');
 post http://soulmateapi.cloudapp.net/api/v1/validasi/mustahiq/43
 
+unvalidasi mustahiq
+post('unvalidasi/mustahiq/{id mustahiq}');
+post http://soulmateapi.cloudapp.net/api/v1/unvalidasi/mustahiq/43
+
 validasi donasi
 post('validasi/donasi/{id donasi}');
 post http://soulmateapi.cloudapp.net/api/v1/validasi/donasi/43
+
+unvalidasi donasi
+post('unvalidasi/donasi/{id donasi}');
+post http://soulmateapi.cloudapp.net/api/v1/unvalidasi/donasi/43
 
 Notifikasi
 
