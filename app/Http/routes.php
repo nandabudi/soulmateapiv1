@@ -54,7 +54,9 @@ $app->group(['prefix' => 'api/v1','namespace' => 'App\Http\Controllers'], functi
   // validasi routes
   $app->post('validasi/mustahiq/{id}','ValidasiController@validasiMustahiq');
   $app->post('validasi/donasi/{id}','ValidasiController@validasiDonasi');
-
+  $app->post('unvalidasi/mustahiq/{id}','ValidasiController@unvalidasiMustahiq');
+  $app->post('unvalidasi/donasi/{id}','ValidasiController@unvalidasiDonasi');
+  
   // notifikasi routes
   $app->get('notifikasi','NotifikasiController@getAllNotifikasi');
   $app->get('notifikasi/{id}','NotifikasiController@getNotifikasi');
