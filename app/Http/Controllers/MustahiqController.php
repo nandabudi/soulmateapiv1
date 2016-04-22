@@ -26,6 +26,33 @@ class MustahiqController extends Controller{
     }
     return response()->json(array('status' => $status,'data' => $result));
   }
+  
+  public function getMustahiqByApproved($id){
+    $client = new Client(HelperController::getHost(), HelperController::getPort());
+    $client->getTransport()
+      ->setAuth(HelperController::getUserNeo4j(), HelperController::getPassNeo4j());
+    $status = 'failed';
+    $properties = array();
+    $result = array();
+    if(count($id) > 0){
+      $cypher = 'MATCH (n:'.HelperController::getLabelMustahiq().') where n.isApproved="'.$id.'" RETURN n';
+      $query = new Query($client, $cypher);
+      $nodes = $query->getResultSet();
+      if(count($nodes) > 0){
+        $status = 'success';
+        foreach($nodes as $node){
+          $properties['id'] = $node['n']->getId();
+          $properties['properties'] = $node['n']->getProperties();
+          array_push($result,$properties);
+        }
+      }else{
+        $status = 'failed, return value is empty check your mustahiq category';
+      }
+    }else{
+      $status = 'failed, mustahiq category is empty please check your parameter';
+    }
+    return response()->json(array('status' => $status,'data' => $result));
+  }
 
   public function getMustahiq($id){
     $client = new Client(HelperController::getHost(), HelperController::getPort());

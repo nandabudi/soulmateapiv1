@@ -39,6 +39,7 @@ $app->group(['prefix' => 'api/v1','namespace' => 'App\Http\Controllers'], functi
   // mustahiq routes
   $app->get('mustahiq','MustahiqController@getAllMustahiq');
   $app->get('mustahiq/{id}','MustahiqController@getMustahiq');
+  $app->get('mustahiq/approved/{id}','MustahiqController@getMustahiqByApproved');
   $app->get('mustahiq/kategori/{id}','MustahiqController@getMustahiqByKategori');
   $app->post('mustahiq','MustahiqController@createMustahiq');
   $app->put('mustahiq/{id}','MustahiqController@updateMustahiq');
