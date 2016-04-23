@@ -33,7 +33,7 @@ class AuthController extends Controller{
           $status = 'success';
           $node = $client->getNode($properties['id']);
           $node->setProperty('gcmId', $gcmId)
-          ->setProperty('isLogin', 1)
+          ->setProperty('isLogin', 0)
           ->save();
         }else{
           $status = 'failed, user already login in other device';
